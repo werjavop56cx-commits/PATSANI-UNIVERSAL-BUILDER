@@ -5,6 +5,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
@@ -14,10 +15,9 @@ import android.widget.Toast;
 
 public class MainActivity extends Activity {
 
-    private boolean isAimbotEnabled = false;
-    private boolean isWallhackEnabled = false;
-    private boolean isSpeedhackEnabled = false;
-    private int fovValue = 90;
+    private boolean isAimBotActive = false;
+    private boolean isWallHackActive = false;
+    private boolean isSpeedHackActive = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,104 +26,105 @@ public class MainActivity extends Activity {
         // Asosiy konteyner (Root Layout)
         LinearLayout rootLayout = new LinearLayout(this);
         rootLayout.setOrientation(LinearLayout.VERTICAL);
+        rootLayout.setLayoutParams(new LinearLayout.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.MATCH_PARENT
+        ));
         rootLayout.setBackgroundColor(Color.parseColor("#121212"));
         rootLayout.setPadding(32, 32, 32, 32);
 
         // Sarlavha (Title)
         TextView titleText = new TextView(this);
-        titleText.setText("SHOGA BALA MOD PANEL");
-        titleText.setTextColor(Color.parseColor("#00E676"));
+        titleText.setText("BALA MODS PANEL v10.0");
+        titleText.setTextColor(Color.parseColor("#00FF66"));
         titleText.setTextSize(22);
         titleText.setGravity(Gravity.CENTER);
-        titleText.setPadding(0, 0, 0, 32);
+        titleText.setPadding(0, 20, 0, 40);
         rootLayout.addView(titleText);
 
-        // ScrollView барои қисми менюҳо
+        // ScrollView барои қисми модулҳо
         ScrollView scrollView = new ScrollView(this);
-        LinearLayout scrollContent = new LinearLayout(this);
-        scrollContent.setOrientation(LinearLayout.VERTICAL);
+        scrollView.setLayoutParams(new LinearLayout.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                0,
+                1.0f
+        ));
 
-        // Switch 1: Aimbot
-        Switch switchAimbot = new Switch(this);
-        switchAimbot.setText("Bala Aimbot (Pro)");
-        switchAimbot.setTextColor(Color.WHITE);
-        switchAimbot.setTextSize(16);
-        switchAimbot.setPadding(0, 16, 0, 16);
-        switchAimbot.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            isAimbotEnabled = isChecked;
-            String status = isChecked ? "Фаъол шуд" ": Хомӯш шуд";
-            Toast.makeText(MainActivity.this, "Aimbot " + status, Toast.LENGTH_SHORT).show();
+        LinearLayout contentLayout = new LinearLayout(this);
+        contentLayout.setOrientation(LinearLayout.VERTICAL);
+        contentLayout.setLayoutParams(new LinearLayout.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT
+        ));
+
+        // 1. AimBot Switch
+        final Switch switchAimBot = new Switch(this);
+        switchAimBot.setText("AimBot (Auto Lock)");
+        switchAimBot.setTextColor(Color.WHITE);
+        switchAimBot.setTextSize(16);
+        switchAimBot.setPadding(0, 20, 0, 20);
+        switchAimBot.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            isAimBotActive = isChecked;
+            String msg = isChecked ? "AimBot фаъол шуд!" : "AimBot хомӯш шуд!";
+            Toast.makeText(MainActivity.this, msg, Toast.LENGTH_SHORT).show();
         });
-        scrollContent.addView(switchAimbot);
+        contentLayout.addView(switchAimBot);
 
-        // Switch 2: Wallhack
-        Switch switchWallhack = new Switch(this);
-        switchWallhack.setText("Bala Wallhack (ESP)");
-        switchWallhack.setTextColor(Color.WHITE);
-        switchWallhack.setTextSize(16);
-        switchWallhack.setPadding(0, 16, 0, 16);
-        switchWallhack.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            isWallhackEnabled = isChecked;
-            String status = isChecked ? "Фаъол шуд" : "Хомӯш шуд";
-            Toast.makeText(MainActivity.this, "Wallhack " + status, Toast.LENGTH_SHORT).show();
+        // 2. WallHack Switch
+        final Switch switchWallHack = new Switch(this);
+        switchWallHack.setText("WallHack (ESP)");
+        switchWallHack.setTextColor(Color.WHITE);
+        switchWallHack.setTextSize(16);
+        switchWallHack.setPadding(0, 20, 0, 20);
+        switchWallHack.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            isWallHackActive = isChecked;
+            String msg = isChecked ? "WallHack фаъол шуд!" : "WallHack хомӯш шуд!";
+            Toast.makeText(MainActivity.this, msg, Toast.LENGTH_SHORT).show();
         });
-        scrollContent.addView(switchWallhack);
+        contentLayout.addView(switchWallHack);
 
-        // Switch 3: Speedhack
-        Switch switchSpeed = new Switch(this);
-        switchSpeed.setText("Bala Speedhack (X2)");
-        switchSpeed.setTextColor(Color.WHITE);
-        switchSpeed.setTextSize(16);
-        switchSpeed.setPadding(0, 16, 0, 16);
-        switchSpeed.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            isSpeedhackEnabled = isChecked;
-            String status = isChecked ? "Фаъол шуд" : "Хомӯш шуд";
-            Toast.makeText(MainActivity.this, "Speedhack " + status, Toast.LENGTH_SHORT).show();
+        // 3. SpeedHack Switch
+        final Switch switchSpeedHack = new Switch(this);
+        switchSpeedHack.setText("SpeedHack x2.0");
+        switchSpeedHack.setTextColor(Color.WHITE);
+        switchSpeedHack.setTextSize(16);
+        switchSpeedHack.setPadding(0, 20, 0, 20);
+        switchSpeedHack.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            isSpeedHackActive = isChecked;
+            String msg = isChecked ? "SpeedHack фаъол шуд!" : "SpeedHack хомӯш шуд!";
+            Toast.makeText(MainActivity.this, msg, Toast.LENGTH_SHORT).show();
         });
-        scrollContent.addView(switchSpeed);
+        contentLayout.addView(switchSpeedHack);
 
-        // FOV Button
-        Button btnFov = new Button(this);
-        btnFov.setText("FOV Settings: " + fovValue);
-        btnFov.setBackgroundColor(Color.parseColor("#1F1F1F"));
-        btnFov.setTextColor(Color.parseColor("#00E676"));
-        btnFov.setPadding(0, 24, 0, 24);
-        btnFov.setOnClickListener(v -> {
-            fovValue = (fovValue == 120) ? 90 : fovValue + 15;
-            btnFov.setText("FOV Settings: " + fovValue);
-            Toast.makeText(MainActivity.this, "FOV иваз шуд: " + fovValue, Toast.LENGTH_SHORT).show();
-        });
-        scrollContent.addView(btnFov);
-
-        // Apply Mods Button
-        Button btnApply = new Button(this);
-        btnApply.setText("Apply All Bala Mods");
-        btnApply.setBackgroundColor(Color.parseColor("#00E676"));
-        btnApply.setTextColor(Color.BLACK);
-        btnApply.setPadding(0, 32, 0, 32);
-        
+        // Tugman Inject (Inject Button)
+        Button btnInject = new Button(this);
+        btnInject.setText("INJECT MODS");
+        btnInject.setTextColor(Color.BLACK);
+        btnInject.setBackgroundColor(Color.parseColor("#00FF66"));
+        btnInject.setPadding(0, 30, 0, 30);
         LinearLayout.LayoutParams btnParams = new LinearLayout.LayoutParams(
-            LinearLayout.LayoutParams.MATCH_PARENT,
-            LinearLayout.LayoutParams.WRAP_CONTENT
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT
         );
-        btnParams.setMargins(0, 48, 0, 0);
-        btnApply.setLayoutParams(btnParams);
-
-        btnApply.setOnClickListener(v -> {
-            StringBuilder result = new StringBuilder("Mods Applied:\n");
-            result.append("Aimbot: ").append(isAimbotEnabled).append("\n");
-            result.append("Wallhack: ").append(isWallhackEnabled).append("\n");
-            result.append("Speedhack: ").append(isSpeedhackEnabled).append("\n");
-            result.append("FOV: ").append(fovValue);
-
-            Toast.makeText(MainActivity.this, result.toString(), Toast.LENGTH_LONG).show();
+        btnParams.setMargins(0, 40, 0, 0);
+        btnInject.setLayoutParams(btnParams);
+        btnInject.setOnClickListener(v -> {
+            Toast.makeText(MainActivity.this, "Модулҳо бомуваффақият ворид карда шуданд!", Toast.LENGTH_LONG).show();
         });
-        scrollContent.addView(btnApply);
+        contentLayout.addView(btnInject);
 
-        scrollView.addView(scrollContent);
+        scrollView.addView(contentLayout);
         rootLayout.addView(scrollView);
 
-        // Set Content View
+        // Статусбар ё Маълумоти муаллиф
+        TextView footerText = new TextView(this);
+        footerText.setText("SHOGA ALL - Android Studio Engine API 35");
+        footerText.setTextColor(Color.parseColor("#777777"));
+        footerText.setTextSize(12);
+        footerText.setGravity(Gravity.CENTER);
+        footerText.setPadding(0, 20, 0, 0);
+        rootLayout.addView(footerText);
+
         setContentView(rootLayout);
     }
 }
