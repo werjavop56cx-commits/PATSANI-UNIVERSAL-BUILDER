@@ -63,7 +63,7 @@ public class MainActivity extends Activity {
         loginButton.setTextColor(Color.BLACK);
         loginButton.setPadding(16, 16, 16, 16);
         
-        LinearLayout. എന്നാൽparams = new LinearLayout.LayoutParams(
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
             LinearLayout.LayoutParams.MATCH_PARENT, 
             LinearLayout.LayoutParams.WRAP_CONTENT
         );
@@ -77,8 +77,7 @@ public class MainActivity extends Activity {
                 if (pass.equals("patsan")) {
                     loginLayout.setVisibility(View.GONE);
                     calcLayout.setVisibility(View.VISIBLE);
-                    Toast. хуш омадед = Toast.makeText(MainActivity.this, "Хуш омадед, бародар!", Toast.LENGTH_SHORT);
-                    хуш омадед.show();
+                    Toast.makeText(MainActivity.this, "Хуш омадед, бародар!", Toast.LENGTH_SHORT).show();
                 } else {
                     Toast.makeText(MainActivity.this, "Парол хато аст! Парол: patsan", Toast.LENGTH_LONG).show();
                 }
