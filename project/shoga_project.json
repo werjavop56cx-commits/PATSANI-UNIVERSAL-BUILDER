@@ -1,0 +1,17 @@
+{
+  "app_name": "Shoga WiFi Scanner",
+  "package": "com.shoga.generated",
+  "permissions": [
+    "android.permission.ACCESS_WIFI_STATE",
+    "android.permission.CHANGE_WIFI_STATE",
+    "android.permission.ACCESS_FINE_LOCATION",
+    "android.permission.ACCESS_COARSE_LOCATION"
+  ],
+  "dependencies": [
+    "androidx.appcompat:appcompat:1.6.1",
+    "com.google.android.material:material:1.9.0",
+    "androidx.constraintlayout:constraintlayout:2.1.4"
+  ],
+  "has_native_cpp": false,
+  "has_service": false
+}

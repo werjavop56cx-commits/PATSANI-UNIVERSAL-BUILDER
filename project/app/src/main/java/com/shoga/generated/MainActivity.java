@@ -1,130 +1,133 @@
 package com.shoga.generated;
 
-import android.app.Activity;
-import android.graphics.Color;
+import android.Manifest;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.content.pm.PackageManager;
+import android.net.wifi.ScanResult;
+import android.net.wifi.WifiManager;
 import android.os.Bundle;
-import android.view.Gravity;
 import android.view.View;
-import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.LinearLayout;
-import android.widget.ScrollView;
-import android.widget.Switch;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import java.util.ArrayList;
+import java.util.List;
 
-public class MainActivity extends Activity {
+public class MainActivity extends AppCompatActivity {
 
-    private boolean isAimBotActive = false;
-    private boolean isWallHackActive = false;
-    private boolean isSpeedHackActive = false;
+    private WifiManager wifiManager;
+    private ListView listView;
+    private Button btnScan;
+    private TextView txtStatus;
+    private ArrayList<String> wifiList = new ArrayList<>();
+    private ArrayAdapter<String> adapter;
+    private static final int PERMISSION_REQUEST_CODE = 100;
+
+    private final BroadcastReceiver wifiScanReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            boolean success = intent.getBooleanExtra(WifiManager.EXTRA_RESULTS_UPDATED, false);
+            if (success) {
+                scanSuccess();
+            } else {
+                scanFailure();
+            }
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
 
-        // Asosiy konteyner (Root Layout)
-        LinearLayout rootLayout = new LinearLayout(this);
-        rootLayout.setOrientation(LinearLayout.VERTICAL);
-        rootLayout.setLayoutParams(new LinearLayout.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.MATCH_PARENT
-        ));
-        rootLayout.setBackgroundColor(Color.parseColor("#121212"));
-        rootLayout.setPadding(32, 32, 32, 32);
+        wifiManager = (WifiManager) getApplicationContext().getSystemService(Context.WIFI_SERVICE);
 
-        // Sarlavha (Title)
-        TextView titleText = new TextView(this);
-        titleText.setText("BALA MODS PANEL v10.0");
-        titleText.setTextColor(Color.parseColor("#00FF66"));
-        titleText.setTextSize(22);
-        titleText.setGravity(Gravity.CENTER);
-        titleText.setPadding(0, 20, 0, 40);
-        rootLayout.addView(titleText);
+        listView = findViewById(R.id.listView);
+        btnScan = findViewById(R.id.btnScan);
+        txtStatus = findViewById(R.id.txtStatus);
 
-        // ScrollView барои қисми модулҳо
-        ScrollView scrollView = new ScrollView(this);
-        scrollView.setLayoutParams(new LinearLayout.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT,
-                0,
-                1.0f
-        ));
+        adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, wifiList);
+        listView.setAdapter(adapter);
 
-        LinearLayout contentLayout = new LinearLayout(this);
-        contentLayout.setOrientation(LinearLayout.VERTICAL);
-        contentLayout.setLayoutParams(new LinearLayout.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT
-        ));
-
-        // 1. AimBot Switch
-        final Switch switchAimBot = new Switch(this);
-        switchAimBot.setText("AimBot (Auto Lock)");
-        switchAimBot.setTextColor(Color.WHITE);
-        switchAimBot.setTextSize(16);
-        switchAimBot.setPadding(0, 20, 0, 20);
-        switchAimBot.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            isAimBotActive = isChecked;
-            String msg = isChecked ? "AimBot фаъол шуд!" : "AimBot хомӯш шуд!";
-            Toast.makeText(MainActivity.this, msg, Toast.LENGTH_SHORT).show();
+        btnScan.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                checkPermissionsAndScan();
+            }
         });
-        contentLayout.addView(switchAimBot);
+    }
 
-        // 2. WallHack Switch
-        final Switch switchWallHack = new Switch(this);
-        switchWallHack.setText("WallHack (ESP)");
-        switchWallHack.setTextColor(Color.WHITE);
-        switchWallHack.setTextSize(16);
-        switchWallHack.setPadding(0, 20, 0, 20);
-        switchWallHack.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            isWallHackActive = isChecked;
-            String msg = isChecked ? "WallHack фаъол шуд!" : "WallHack хомӯш шуд!";
-            Toast.makeText(MainActivity.this, msg, Toast.LENGTH_SHORT).show();
-        });
-        contentLayout.addView(switchWallHack);
+    private void checkPermissionsAndScan() {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, PERMISSION_REQUEST_CODE);
+        } else {
+            startWifiScan();
+        }
+    }
 
-        // 3. SpeedHack Switch
-        final Switch switchSpeedHack = new Switch(this);
-        switchSpeedHack.setText("SpeedHack x2.0");
-        switchSpeedHack.setTextColor(Color.WHITE);
-        switchSpeedHack.setTextSize(16);
-        switchSpeedHack.setPadding(0, 20, 0, 20);
-        switchSpeedHack.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            isSpeedHackActive = isChecked;
-            String msg = isChecked ? "SpeedHack фаъол шуд!" : "SpeedHack хомӯш шуд!";
-            Toast.makeText(MainActivity.this, msg, Toast.LENGTH_SHORT).show();
-        });
-        contentLayout.addView(switchSpeedHack);
+    private void startWifiScan() {
+        if (!wifiManager.isWifiEnabled()) {
+            wifiManager.setWifiEnabled(true);
+        }
+        
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction(WifiManager.SCAN_RESULTS_AVAILABLE_ACTION);
+        registerReceiver(wifiScanReceiver, intentFilter);
 
-        // Tugman Inject (Inject Button)
-        Button btnInject = new Button(this);
-        btnInject.setText("INJECT MODS");
-        btnInject.setTextColor(Color.BLACK);
-        btnInject.setBackgroundColor(Color.parseColor("#00FF66"));
-        btnInject.setPadding(0, 30, 0, 30);
-        LinearLayout.LayoutParams btnParams = new LinearLayout.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT
-        );
-        btnParams.setMargins(0, 40, 0, 0);
-        btnInject.setLayoutParams(btnParams);
-        btnInject.setOnClickListener(v -> {
-            Toast.makeText(MainActivity.this, "Модулҳо бомуваффақият ворид карда шуданд!", Toast.LENGTH_LONG).show();
-        });
-        contentLayout.addView(btnInject);
+        boolean success = wifiManager.startScan();
+        if (!success) {
+            scanFailure();
+        } else {
+            txtStatus.setText("Сканкунӣ рафта истодааст...");
+        }
+    }
 
-        scrollView.addView(contentLayout);
-        rootLayout.addView(scrollView);
+    private void scanSuccess() {
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            return;
+        }
+        List<ScanResult> results = wifiManager.getScanResults();
+        wifiList.clear();
+        for (ScanResult result : results) {
+            wifiList.add(result.SSID + "\nBSSID: " + result.BSSID + "\nRSSI: " + result.level);
+        }
+        adapter.notifyDataSetChanged();
+        txtStatus.setText("Шабакаҳои ёфтшуда: " + results.size());
+        try {
+            unregisterReceiver(wifiScanReceiver);
+        } catch (Exception e) {
+            // Receiver already unregistered
+        }
+    }
 
-        // Статусбар ё Маълумоти муаллиф
-        TextView footerText = new TextView(this);
-        footerText.setText("SHOGA ALL - Android Studio Engine API 35");
-        footerText.setTextColor(Color.parseColor("#777777"));
-        footerText.setTextSize(12);
-        footerText.setGravity(Gravity.CENTER);
-        footerText.setPadding(0, 20, 0, 0);
-        rootLayout.addView(footerText);
+    private void scanFailure() {
+        txtStatus.setText("Хатогӣ ҳангоми сканкунӣ!");
+        Toast.makeText(this, "Скан на шуд", Toast.LENGTH_SHORT).show();
+        try {
+            unregisterReceiver(wifiScanReceiver);
+        } catch (Exception e) {
+            // Receiver already unregistered
+        }
+    }
 
-        setContentView(rootLayout);
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == PERMISSION_REQUEST_CODE) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                startWifiScan();
+            } else {
+                Toast.makeText(this, "Иҷозат рад карда шуд!", Toast.LENGTH_SHORT).show();
+            }
+        }
     }
 }
