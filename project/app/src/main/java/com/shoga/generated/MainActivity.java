@@ -1,177 +1,148 @@
 package com.shoga.generated;
 
 import android.app.Activity;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
 public class MainActivity extends Activity {
 
-    private TextView tvDisplay;
-    private String currentInput = "";
-    private String operator = "";
-    private double firstValue = 0.0;
-    private boolean isNewOp = true;
+    private EditText edtUsername, edtPassword;
+    private Button btnSave;
+    private Switch switchAim, switchEsp, switchSpeed;
+    private TextView tvStatus;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        // Main Layout
         LinearLayout rootLayout = new LinearLayout(this);
         rootLayout.setOrientation(LinearLayout.VERTICAL);
-        rootLayout.setBackgroundColor(0xFF121212);
+        rootLayout.setBackgroundColor(Color.parseColor("#121212"));
         rootLayout.setPadding(32, 32, 32, 32);
 
-        tvDisplay = new TextView(this);
-        tvDisplay.setText("0");
-        tvDisplay.setTextColor(0xFFFFFFFF);
-        tvDisplay.setTextSize(48);
-        tvDisplay.setGravity(Gravity.END | Gravity.BOTTOM);
-        tvDisplay.setPadding(32, 64, 32, 64);
-        LinearLayout.LayoutParams displayParams = new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT,
-                0,
-                2.0f
+        ScrollView scrollView = new ScrollView(this);
+        scrollView.setLayoutParams(new LinearLayout.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.MATCH_PARENT
+        ));
+
+        LinearLayout contentLayout = new LinearLayout(this);
+        contentLayout.setOrientation(LinearLayout.VERTICAL);
+        contentLayout.setLayoutParams(new LinearLayout.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT
+        ));
+
+        // Title
+        TextView tvTitle = new TextView(this);
+        tvTitle.setText("SHOGA FREE FIRE PANEL");
+        tvTitle.setTextColor(Color.parseColor("#00E676"));
+        tvTitle.setTextSize(22);
+        tvTitle.setGravity(Gravity.CENTER);
+        tvTitle.setPadding(0, 0, 0, 32);
+        contentLayout.addView(tvTitle);
+
+        // Username Input
+        edtUsername = new EditText(this);
+        edtUsername.setHint("Номи нави корбар (Username)");
+        edtUsername.setHintTextColor(Color.parseColor("#757575"));
+        edtUsername.setTextColor(Color.WHITE);
+        edtUsername.setBackgroundColor(Color.parseColor("#1E1E1E"));
+        edtUsername.setPadding(24, 24, 24, 24);
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT
         );
-        rootLayout.addView(tvDisplay, displayParams);
+        params.setMargins(0, 0, 0, 24);
+        edtUsername.setLayoutParams(params);
+        contentLayout.addView(edtUsername);
 
-        String[][] buttons = {
-            {"C", "()", "%", "/"},
-            {"7", "8", "9", "*"},
-            {"4", "5", "6", "-"},
-            {"1", "2", "3", "+"},
-            {"+/-", "0", ".", "="}
-        };
+        // Password Input
+        edtPassword = new EditText(this);
+        edtPassword.setHint("Пароли нав (Password)");
+        edtPassword.setHintTextColor(Color.parseColor("#757575"));
+        edtPassword.setTextColor(Color.WHITE);
+        edtPassword.setBackgroundColor(Color.parseColor("#1E1E1E"));
+        edtPassword.setPadding(24, 24, 24, 24);
+        edtPassword.setLayoutParams(params);
+        contentLayout.addView(edtPassword);
 
-        for (String[] row : buttons) {
-            LinearLayout rowLayout = new LinearLayout(this);
-            rowLayout.setOrientation(LinearLayout.HORIZONTAL);
-            LinearLayout.LayoutParams rowParams = new LinearLayout.LayoutParams(
-                    LinearLayout.LayoutParams.MATCH_PARENT,
-                    0,
-                    1.0f
-            );
-            rowParams.setMargins(0, 8, 0, 8);
+        // Save Button
+        btnSave = new Button(this);
+        btnSave.setText("ИВВАЗ КУНИИ МАЪЛУМОТ");
+        btnSave.setTextColor(Color.WHITE);
+        btnSave.setBackgroundColor(Color.parseColor("#6200EE"));
+        btnSave.setPadding(24, 24, 24, 24);
+        btnSave.setLayoutParams(params);
+        contentLayout.addView(btnSave);
 
-            for (String text : row) {
-                Button btn = new Button(this);
-                btn.setText(text);
-                btn.setTextSize(24);
-                btn.setTextColor(0xFFFFFFFF);
-                btn.setBackgroundColor(0xFF2D2D2D);
-                
-                LinearLayout.LayoutParams btnParams = new LinearLayout.LayoutParams(
-                        0,
-                        LinearLayout.LayoutParams.MATCH_PARENT,
-                        1.0f
-                );
-                btnParams.setMargins(8, 0, 8, 0);
-                rowLayout.addView(btn, btnParams);
+        // Cheats Section Title
+        TextView tvCheats = new TextView(this);
+        tvCheats.setText("Танзимоти Бозӣ (Features)");
+        tvCheats.setTextColor(Color.parseColor("#FF9800"));
+        tvCheats.setTextSize(18);
+        tvCheats.setPadding(0, 32, 0, 16);
+        contentLayout.addView(tvCheats);
 
-                btn.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        onButtonClick(text);
+        // Switches
+        switchAim = new Switch(this);
+        switchAim.setText("AimLock 360");
+        switchAim.setTextColor(Color.WHITE);
+        switchAim.setPadding(0, 16, 0, 16);
+        contentLayout.addView(switchAim);
+
+        switchEsp = new Switch(this);
+        switchEsp.setText("ESP Box / Line");
+        switchEsp.setTextColor(Color.WHITE);
+        switchEsp.setPadding(0, 16, 0, 16);
+        contentLayout.addView(switchEsp);
+
+        switchSpeed = new Switch(this);
+        switchSpeed.setText("Speed Hack x2");
+        switchSpeed.setTextColor(Color.WHITE);
+        switchSpeed.setPadding(0, 16, 0, 32);
+        contentLayout.addView(switchSpeed);
+
+        // Status Label
+        tvStatus = new TextView(this);
+        tvStatus.setText("Ҳолат: Тайёр ба кор");
+        tvStatus.setTextColor(Color.parseColor("#00E676"));
+        tvStatus.setGravity(Gravity.CENTER);
+        contentLayout.addView(tvStatus);
+
+        // Logic
+        btnSave.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                try {
+                    String user = edtUsername.getText().toString().trim();
+                    String pass = edtPassword.getText().toString().trim();
+
+                    if (user.isEmpty() || pass.isEmpty()) {
+                        Toast.makeText(MainActivity.class.cast(MainActivity.this), "Лутфан ҳамаи майдонҳоро пур кунед!", Toast.LENGTH_SHORT).show();
+                    } else {
+                        tvStatus.setText("Успешно! Ном ва парол иваз шуданд.");
+                        Toast.makeText(MainActivity.this, "Маълумот бо муваффақият сабт шуд!", Toast.LENGTH_LONG).show();
                     }
-                });
+                } catch (Exception e) {
+                    Toast.makeText(MainActivity.this, "Хатогӣ рух дод: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                }
             }
-            rootLayout.addView(rowLayout, rowParams);
-        }
+        });
 
+        scrollView.addView(contentLayout);
+        rootLayout.addView(scrollView);
         setContentView(rootLayout);
-    }
-
-    private void onButtonClick(String symbol) {
-        switch (symbol) {
-            case "C":
-                currentInput = "";
-                operator = "";
-                firstValue = 0.0;
-                isNewOp = true;
-                tvDisplay.setText("0");
-                break;
-            case "+":
-            case "-":
-            case "*":
-            case "/":
-                if (!currentInput.isEmpty()) {
-                    firstValue = Double.parseDouble(currentInput);
-                    operator = symbol;
-                    isNewOp = true;
-                }
-                break;
-            case "=":
-                if (!currentInput.isEmpty() && !operator.isEmpty()) {
-                    double secondValue = Double.parseDouble(currentInput);
-                    double result = 0.0;
-                    switch (operator) {
-                        case "+":
-                            result = firstValue + secondValue;
-                            break;
-                        case "-":
-                            result = firstValue - secondValue;
-                            break;
-                        case "*":
-                            result = firstValue * secondValue;
-                            break;
-                        case "/":
-                            if (secondValue == 0) {
-                                Toast.makeText(this, "Тақсим ба сифр мумкин нест", Toast.LENGTH_SHORT).show();
-                                return;
-                            }
-                            result = firstValue / secondValue;
-                            break;
-                    }
-                    if (result == (long) result) {
-                        tvDisplay.setText(String.valueOf((long) result));
-                    } else {
-                        tvDisplay.setText(String.valueOf(result));
-                    }
-                    currentInput = String.valueOf(result);
-                    operator = "";
-                    isNewOp = true;
-                }
-                break;
-            case ".":
-                if (isNewOp) {
-                    currentInput = "0.";
-                    isNewOp = false;
-                } else if (!currentInput.contains(".")) {
-                    currentInput += ".";
-                }
-                tvDisplay.setText(currentInput);
-                break;
-            case "+/-":
-                if (!currentInput.isEmpty() && !currentInput.equals("0")) {
-                    if (currentInput.startsWith("-")) {
-                        currentInput = currentInput.substring(1);
-                    } else {
-                        currentInput = "-" + currentInput;
-                    }
-                    tvDisplay.setText(currentInput);
-                }
-                break;
-            case "% Льво":
-            case "%":
-                if (!currentInput.isEmpty()) {
-                    double val = Double.parseDouble(currentInput) / 100.0;
-                    currentInput = String.valueOf(val);
-                    tvDisplay.setText(currentInput);
-                }
-                break;
-            default:
-                if (isNewOp) {
-                    currentInput = symbol;
-                    isNewOp = false;
-                } else {
-                    currentInput += symbol;
-                }
-                tvDisplay.setText(currentInput);
-                break;
-        }
     }
 }
