@@ -1,151 +1,184 @@
 package com.shoga.generated;
 
 import android.app.Activity;
-import android.app.AlertDialog;
-import android.graphics.Color;
 import android.os.Bundle;
-import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.LinearLayout;
-import android.widget.ScrollView;
-import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
 public class MainActivity extends Activity {
 
-    private EditText passInput;
-    private Switch headshotSwitch, fpsSwitch, lagSwitch, bypassSwitch;
-    private TextView statusText;
+    private EditText inputNumber1, inputNumber2, inputPassword;
+    private TextView textResult;
+    private Button btnAdd, btnSubtract, btnMultiply, btnDivide, btnLogin;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        // Main Layout (Gaming Style - Dark Theme & Neon Accents)
-        LinearLayout rootLayout = new LinearLayout(this);
-        rootLayout.setOrientation(LinearLayout.VERTICAL);
-        rootLayout.setBackgroundColor(Color.parseColor("#0A0A0C"));
-        rootLayout.setPadding(30, 30, 30, 30);
+        android.widget.LinearLayout rootLayout = new android.widget.LinearLayout(this);
+        rootLayout.setOrientation(android.widget.LinearLayout.VERTICAL);
+        rootLayout.setPadding(32, 32, 32, 32);
+        rootLayout.setBackgroundColor(0xFF121212);
 
-        // Title
         TextView title = new TextView(this);
-        title.setText("PATSAN PRO PANEL");
-        title.setTextColor(Color.parseColor("#00FF66"));
-        title.setTextSize(24);
-        title.setTypeface(null, android.graphics.Typeface.BOLD);
-        title.setGravity(Gravity.CENTER);
-        title.setPadding(0, 20, 0, 40);
+        title.setText("PATSAN PRO - Drip Client");
+        title.setTextSize(22);
+        title.setTextColor(0xFF03DAC5);
+        title.setGravity(android.view.Gravity.CENTER);
+        title.setPadding(0, 0, 0, 32);
         rootLayout.addView(title);
 
-        // ScrollView for features
-        ScrollView scrollView = new ScrollView(this);
-        LinearLayout scrollContent = new LinearLayout(this);
-        scrollContent.setOrientation(LinearLayout.VERTICAL);
+        inputPassword = new EditText(this);
+        inputPassword.setHint("Паролро ворид кунед");
+        inputPassword.setInputType(android.text.InputType.TYPE_CLASS_TEXT | android.text.InputType.TYPE_TEXT_VARIATION_PASSWORD);
+        inputPassword.setTextColor(0xFFFFFFFF);
+        inputPassword.setHintTextColor(0xFF888888);
+        rootLayout.addView(inputPassword);
 
-        // Password Section
-        TextView passLabel = new TextView(this);
-        passLabel.setText("ENTER ACTIVATION KEY:");
-        passLabel.setTextColor(Color.parseColor("#FFFFFF"));
-        scrollContent.addView(passLabel);
+        btnLogin = new Button(this);
+        btnLogin.setText("Санҷиши парол");
+        btnLogin.setBackgroundColor(0xFF6200EE);
+        btnLogin.setTextColor(0xFFFFFFFF);
+        rootLayout.addView(btnLogin);
 
-        passInput = new EditText(this);
-        passInput.setHint("Enter Password");
-        passInput.setHintTextColor(Color.parseColor("#555555"));
-        passInput.setTextColor(Color.parseColor("#FFFFFF"));
-        passInput.setInputType(android.text.InputType.TYPE_CLASS_TEXT | android.text.InputType.TYPE_TEXT_VARIATION_PASSWORD);
-        scrollContent.addView(passInput);
+        View spacer = new View(this);
+        spacer.setMinimumHeight(40);
+        rootLayout.addView(spacer);
 
-        Button loginBtn = createGamingButton("AUTHORIZE");
-        loginBtn.setOnClickListener(v -> {
-            String pass = passInput.getText().toString().trim();
-            if (pass.isEmpty()) {
-                Toast.makeText(MainActivity.this, "Error: Key field is empty!", Toast.LENGTH_SHORT).show();
-            } else if (pass.equals("PATSAN2025")) {
-                Toast.makeText(MainActivity.this, "Access Granted! Welcome Pro.", Toast.LENGTH_LONG).show();
-                statusText.setText("Status: ACTIVE");
-                statusText.setTextColor(Color.parseColor("#00FF66"));
-            } else {
-                Toast.makeText(MainActivity.this, "Invalid Key! Access Denied.", Toast.LENGTH_SHORT).show();
-            }
-        });
-        scrollContent.addView(loginBtn);
+        inputNumber1 = new EditText(this);
+        inputNumber1.setHint("Рақами 1");
+        inputNumber1.setInputType(android.text.InputType.TYPE_CLASS_NUMBER | android.text.InputType.TYPE_NUMBER_FLAG_DECIMAL);
+        inputNumber1.setTextColor(0xFFFFFFFF);
+        inputNumber1.setHintTextColor(0xFF888888);
+        rootLayout.addView(inputNumber1);
 
-        // Separator
-        View sep = new View(this);
-        sep.setMinimumHeight(5);
-        sep.setBackgroundColor(Color.parseColor("#222222"));
-        LinearLayout.LayoutParams sepParams = new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT, 20);
-        sepParams.setMargins(0, 20, 0, 20);
-        sep.setLayoutParams(sepParams);
-        scrollContent.addView(sep);
+        inputNumber2 = new EditText(this);
+        inputNumber2.setHint("Рақами 2");
+        inputNumber2.setInputType(android.text.InputType.TYPE_CLASS_NUMBER | android.text.InputType.TYPE_NUMBER_FLAG_DECIMAL);
+        inputNumber2.setTextColor(0xFFFFFFFF);
+        inputNumber2.setHintTextColor(0xFF888888);
+        rootLayout.addView(inputNumber2);
 
-        // Status Display
-        statusText = new TextView(this);
-        statusText.setText("Status: LOCKED");
-        statusText.setTextColor(Color.parseColor("#FF3333"));
-        statusText.setTextSize(16);
-        statusText.setGravity(Gravity.CENTER);
-        scrollContent.addView(statusText);
+        android.widget.LinearLayout btnLayout = new android.widget.LinearLayout(this);
+        btnLayout.setOrientation(android.widget.LinearLayout.HORIZONTAL);
+        btnLayout.setGravity(android.view.Gravity.CENTER);
 
-        // Switches for Pro Features
-        headshotSwitch = createGamingSwitch("AIMBOT HEADSHOT 100%");
-        fpsSwitch = createGamingSwitch("UNLOCK 90 FPS");
-        lagSwitch = createGamingSwitch("ANTI-LAG FIX");
-        bypassSwitch = createGamingSwitch("BYPASS ANTI-CHEAT");
+        btnAdd = new Button(this);
+        btnAdd.setText("+");
+        btnAdd.setTextColor(0xFFFFFFFF);
+        btnAdd.setBackgroundColor(0xFF3700B3);
+        btnLayout.addView(btnAdd);
 
-        scrollContent.addView(headshotSwitch);
-        scrollContent.addView(fpsSwitch);
-        scrollContent.addView(lagSwitch);
-        scrollContent.addView(bypassSwitch);
+        btnSubtract = new Button(this);
+        btnSubtract.setText("-");
+        btnSubtract.setTextColor(0xFFFFFFFF);
+        btnSubtract.setBackgroundColor(0xFF3700B3);
+        btnLayout.addView(btnSubtract);
 
-        // Action Button
-        Button applyBtn = createGamingButton("APPLY CONFIG");
-        applyBtn.setOnClickListener(v -> {
-            StringBuilder sb = new StringBuilder("Applied:\n");
-            if (headshotSwitch.isChecked()) sb.append("- Headshot Aimbot\n");
-            if (fpsSwitch.isChecked()) sb.append("- 90 FPS Unlocked\n");
-            if (lagSwitch.isChecked()) sb.append("- Anti-Lag Enabled\n");
-            if (bypassSwitch.isChecked()) sb.append("- Bypass Active\n");
-            
-            AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-            builder.setTitle("PATSAN PANEL CONFIG");
-            builder.setMessage(sb.toString());
-            builder.setPositiveButton("OK", (dialog, which) -> dialog.dismiss());
-            builder.show();
-        });
-        scrollContent.addView(applyBtn);
+        btnMultiply = new Button(this);
+        btnMultiply.setText("*");
+        btnMultiply.setTextColor(0xFFFFFFFF);
+        btnMultiply.setBackgroundColor(0xFF3700B3);
+        btnLayout.addView(btnMultiply);
 
-        scrollView.addView(scrollContent);
-        rootLayout.addView(scrollView);
+        btnDivide = new Button(this);
+        btnDivide.setText("/");
+        btnDivide.setTextColor(0xFFFFFFFF);
+        btnDivide.setBackgroundColor(0xFF3700B3);
+        btnLayout.addView(btnDivide);
+
+        rootLayout.addView(btnLayout);
+
+        textResult = new TextView(this);
+        textResult.setText("Натиҷа: ");
+        textResult.setTextSize(18);
+        textResult.setTextColor(0xFF03DAC5);
+        textResult.setPadding(0, 32, 0, 0);
+        rootLayout.addView(textResult);
 
         setContentView(rootLayout);
+
+        btnLogin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String pass = inputPassword.getText().toString();
+                if (pass.isEmpty()) {
+                    Toast.makeText(MainActivity.this, "Лутфан паролро нависед!", Toast.LENGTH_SHORT).show();
+                } else if (pass.equals("patsan2024")) {
+                    Toast.makeText(MainActivity.this, "Парол дуруст аст! Хуш омадед!", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(MainActivity.this, "Пароли хато!", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
+        btnAdd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                calculate("+");
+            }
+        });
+
+        btnSubtract.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                calculate("-");
+            }
+        });
+
+        btnMultiply.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                calculate("*");
+            }
+        });
+
+        btnDivide.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                calculate("/");
+            }
+        });
     }
 
-    private Button createGamingButton(String text) {
-        Button btn = new Button(this);
-        btn.setText(text);
-        btn.setTextColor(Color.parseColor("#FFFFFF"));
-        btn.setBackgroundColor(Color.parseColor("#1E1E24"));
-        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT, 120);
-        params.setMargins(0, 15, 0, 15);
-        btn.setLayoutParams(params);
-        return btn;
-    }
+    private void calculate(String op) {
+        String s1 = inputNumber1.getText().toString();
+        String s2 = inputNumber2.getText().toString();
 
-    private Switch createGamingSwitch(String text) {
-        Switch sw = new Switch(this);
-        sw.setText(text);
-        sw.setTextColor(Color.parseColor("#CCCCCC"));
-        sw.setPadding(20, 20, 20, 20);
-        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-        params.setMargins(0, 10, 0, 10);
-        sw.setLayoutParams(params);
-        return sw;
+        if (s1.isEmpty() || s2.isEmpty()) {
+            Toast.makeText(this, "Лутфан ҳарду рақамро пур кунед!", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        try {
+            double num1 = Double.parseDouble(s1);
+            double num2 = Double.parseDouble(s2);
+            double res = 0;
+
+            switch (op) {
+                case "+":
+                    res = num1 + num2;
+                    break;
+                case "-":
+                    res = num1 - num2;
+                    break;
+                case "*":
+                    res = num1 * num2;
+                    break;
+                case "/":
+                    if (num2 == 0) {
+                        Toast.makeText(this, "Хато: Тақсимкунӣ ба сифр мумкин нест!", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                    res = num1 / num2;
+                    break;
+            }
+            textResult.setText("Натиҷа: " + res);
+        } catch (NumberFormatException e) {
+            Toast.makeText(this, "Формати рақам хато аст!", Toast.LENGTH_SHORT).show();
+        }
     }
 }
