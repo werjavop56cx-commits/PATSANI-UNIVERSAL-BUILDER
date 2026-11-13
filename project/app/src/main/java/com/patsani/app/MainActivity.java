@@ -89,7 +89,7 @@ public class MainActivity extends Activity {
 
                 LinearLayout.LayoutParams p =
                     new LinearLayout.LayoutParams(0, 0, 1);
-                p.height = 0;
+                p.height = -1;
                 p.weight = 1;
                 p.setMargins(5, 5, 5, 5);
                 line.addView(b, p);
