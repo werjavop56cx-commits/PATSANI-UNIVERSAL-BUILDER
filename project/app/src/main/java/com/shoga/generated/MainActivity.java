@@ -1,14 +1,13 @@
 package com.shoga.generated;
 
+import android.app.Activity;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.*;
-import androidx.appcompat.app.AppCompatActivity;
 
-public class MainActivity extends AppCompatActivity {
-
+public class MainActivity extends Activity {
     private LinearLayout mainLayout;
 
     @Override
@@ -22,50 +21,59 @@ public class MainActivity extends AppCompatActivity {
         mainLayout.setOrientation(LinearLayout.VERTICAL);
         mainLayout.setGravity(Gravity.CENTER);
         mainLayout.setPadding(50, 50, 50, 50);
-        mainLayout.setBackgroundColor(Color.parseColor("#121212"));
-
-        TextView title = new TextView(this);
-        title.setText("TJ PATSAN");
-        title.setTextSize(30);
-        title.setTextColor(Color.YELLOW);
-        title.setGravity(Gravity.CENTER);
 
         EditText user = new EditText(this);
-        user.setHint("Логин");
-        user.setTextColor(Color.WHITE);
-        user.setHintTextColor(Color.GRAY);
-
+        user.setHint("Логин: PATSAN");
+        
         EditText pass = new EditText(this);
-        pass.setHint("Парол");
-        pass.setTextColor(Color.WHITE);
-        pass.setHintTextColor(Color.GRAY);
-        pass.setInputType(129);
+        pass.setHint("Парол: PATSAN");
+        pass.setInputType(129); // Password type
 
-        Button btn = new Button(this);
-        btn.setText("Даромадан");
-        btn.setBackgroundColor(Color.YELLOW);
-        btn.setOnClickListener(v -> showProfileScreen());
+        Button loginBtn = new Button(this);
+        loginBtn.setText("Даромадан");
+        loginBtn.setOnClickListener(v -> {
+            if (user.getText().toString().equals("PATSAN") && pass.getText().toString().equals("PATSAN")) {
+                showMenu();
+            } else {
+                Toast.makeText(this, "Хато! Логин ё парол нодуруст.", Toast.LENGTH_SHORT).show();
+            }
+        });
 
-        mainLayout.addView(title);
         mainLayout.addView(user);
         mainLayout.addView(pass);
-        mainLayout.addView(btn);
+        mainLayout.addView(loginBtn);
         setContentView(mainLayout);
     }
 
-    private void showProfileScreen() {
+    private void showMenu() {
         mainLayout.removeAllViews();
+        TextView title = new TextView(this);
+        title.setText("МЕНЮИ TJ PATSAN");
+        title.setTextSize(20);
         
-        TextView profile = new TextView(this);
-        profile.setText("Хуш омадед, Patsan!\n\nМеню:\n1. Статус\n2. Суратҳо\n3. Танзимот");
-        profile.setTextSize(20);
-        profile.setTextColor(Color.WHITE);
-        
-        Button back = new Button(this);
-        back.setText("Баромадан");
-        back.setOnClickListener(v -> showLoginScreen());
+        Button profileBtn = new Button(this);
+        profileBtn.setText("Профил");
+        profileBtn.setOnClickListener(v -> showProfile());
 
-        mainLayout.addView(profile);
-        mainLayout.addView(back);
+        Button exitBtn = new Button(this);
+        exitBtn.setText("Баромадан");
+        exitBtn.setOnClickListener(v -> showLoginScreen());
+
+        mainLayout.addView(title);
+        mainLayout.addView(profileBtn);
+        mainLayout.addView(exitBtn);
+    }
+
+    private void showProfile() {
+        mainLayout.removeAllViews();
+        TextView profileInfo = new TextView(this);
+        profileInfo.setText("Ном: PATSAN\nСтатус: Дар ҳаракат!\nСабк: Тоҷикӣ");
+        
+        Button backBtn = new Button(this);
+        backBtn.setText("Бозгашт");
+        backBtn.setOnClickListener(v -> showMenu());
+
+        mainLayout.addView(profileInfo);
+        mainLayout.addView(backBtn);
     }
 }
