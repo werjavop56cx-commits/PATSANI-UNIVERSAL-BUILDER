@@ -8,136 +8,152 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 public class MainActivity extends Activity {
 
-    private EditText inputSkill;
-    private TextView resultTitle;
-    private TextView resultDescription;
-    private LinearLayout historyLayout;
+    private EditText inputNum1, inputNum2;
+    private TextView textResult;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        // Asosiy ScrollView барои зебоӣ ва коршоямӣ
-        ScrollView scrollView = new ScrollView(this);
-        scrollView.setLayoutParams(new ScrollView.LayoutParams(
-                ScrollView.LayoutParams.MATCH_PARENT,
-                ScrollView.LayoutParams.MATCH_PARENT
-        ));
-        scrollView.setBackgroundColor(Color.parseColor("#F5F5F5"));
+        LinearLayout rootLayout = new LinearLayout(this);
+        rootLayout.setOrientation(LinearLayout.VERTICAL);
+        rootLayout.setPadding(32, 32, 32, 32);
+        rootLayout.setBackgroundColor(Color.parseColor("#F5F5F5"));
+        rootLayout.setGravity(Gravity.CENTER_HORIZONTAL);
 
-        // LinearLayout-и асосӣ
-        LinearLayout mainLayout = new LinearLayout(this);
-        mainLayout.setOrientation(LinearLayout.VERTICAL);
-        mainLayout.setPadding(40, 40, 40, 40);
-        scrollView.addView(mainLayout);
-
-        // Сарлавҳаи барнома
         TextView title = new TextView(this);
-        title.setText("Таҳлилгари Маҳорати SHOGA ALL");
+        title.setText("SHOGA CALCULATOR PRO");
         title.setTextSize(22);
         title.setTextColor(Color.parseColor("#3F51B5"));
         title.setGravity(Gravity.CENTER);
-        title.setPadding(0, 0, 0, 30);
-        mainLayout.addView(title);
+        title.setPadding(0, 0, 0, 32);
+        rootLayout.addView(title);
 
-        // Саволи корбар: Чаро фаҳмиши ту кам аст?
-        TextView questionLabel = new TextView(this);
-        questionLabel.setText("Савол: Чаро фаҳмиши ту дар барномасозӣ кам аст?");
-        questionLabel.setTextSize(16);
-        questionLabel.setTextColor(Color.parseColor("#333333"));
-        questionLabel.setPadding(0, 0, 0, 15);
-        mainLayout.addView(questionLabel);
+        inputNum1 = new EditText(this);
+        inputNum1.setHint("Рақами якумро ворид кунед");
+        inputNum1.setInputType(android.text.InputType.TYPE_CLASS_NUMBER | android.text.InputType.TYPE_NUMBER_FLAG_DECIMAL | android.text.InputType.TYPE_NUMBER_FLAG_SIGNED);
+        inputNum1.setPadding(16, 16, 16, 16);
+        rootLayout.addView(inputNum1);
 
-        // Майдони воридкунии матн (EditText)
-        inputSkill = new EditText(this);
-        inputSkill.setHint("Фикри худро нависед ё мавзӯъро ворид кунед...");
-        inputSkill.setTextSize(14);
-        inputSkill.setPadding(20, 20, 20, 20);
-        inputSkill.setBackgroundColor(Color.WHITE);
-        mainLayout.addView(inputSkill);
+        inputNum2 = new EditText(this);
+        inputNum2.setHint("Рақами дуюмро ворид кунед");
+        inputNum2.setInputType(android.text.InputType.TYPE_CLASS_NUMBER | android.text.InputType.TYPE_NUMBER_FLAG_DECIMAL | android.text.InputType.TYPE_NUMBER_FLAG_SIGNED);
+        inputNum2.setPadding(16, 16, 16, 16);
+        rootLayout.addView(inputNum2);
 
-        // Фосила
-        View spacer1 = new View(this);
-        spacer1.setLayoutParams(new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT, 30));
-        mainLayout.addView(spacer1);
+        LinearLayout btnLayout = new LinearLayout(this);
+        btnLayout.setOrientation(LinearLayout.HORIZONTAL);
+        btnLayout.setGravity(Gravity.CENTER);
+        btnLayout.setPadding(0, 24, 0, 24);
 
-        // Тугмаи таҳлил
-        Button analyzeButton = new Button(this);
-        analyzeButton.setText("Таҳлил кардан ва Исбот");
-        analyzeButton.setBackgroundColor(Color.parseColor("#3F51B5"));
-        analyzeButton.setTextColor(Color.WHITE);
-        analyzeButton.setPadding(20, 20, 20, 20);
-        mainLayout.addView(analyzeButton);
+        Button btnAdd = createButton("+");
+        Button btnSub = createButton("-");
+        Button btnMul = createButton("*");
+        Button btnDiv = createButton("/");
 
-        // Фосила
-        View spacer2 = new View(this);
-        spacer2.setLayoutParams(new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT, 30));
-        mainLayout.addView(spacer2);
+        btnLayout.addView(btnAdd);
+        btnLayout.addView(btnSub);
+        btnLayout.addView(btnMul);
+        btnLayout.addView(btnDiv);
 
-        // Қисмати натиҷа
-        resultTitle = new TextView(this);
-        resultTitle.setTextSize(18);
-        resultTitle.setTextColor(Color.parseColor("#D32F2F"));
-        mainLayout.addView(resultTitle);
+        rootLayout.addView(btnLayout);
 
-        resultDescription = new TextView(this);
-        resultDescription.setTextSize(14);
-        resultDescription.setTextColor(Color.parseColor("#555555"));
-        resultDescription.setPadding(0, 10, 0, 20);
-        mainLayout.addView(resultDescription);
+        textResult = new TextView(this);
+        textResult.setText("Натиҷа: 0");
+        textResult.setTextSize(20);
+        textResult.setTextColor(Color.parseColor("#333333"));
+        textResult.setGravity(Gravity.CENTER);
+        textResult.setPadding(0, 32, 0, 0);
+        rootLayout.addView(textResult);
 
-        // Таърихи таҳлилҳо
-        TextView historyTitle = new TextView(this);
-        historyTitle.setText("Таърихи саволҳо:");
-        historyTitle.setTextSize(16);
-        historyTitle.setTextColor(Color.parseColor("#333333"));
-        mainLayout.addView(historyTitle);
-
-        historyLayout = new LinearLayout(this);
-        historyLayout.setOrientation(LinearLayout.VERTICAL);
-        mainLayout.addView(historyLayout);
-
-        // Мантиқи тугма
-        analyzeButton.setOnClickListener(new View.OnClickListener() {
+        btnAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String query = inputSkill.getText().toString().trim();
-
-                // Санҷиши майдони холӣ (Пешгирии crash)
-                if (query.isEmpty()) {
-                    Toast.makeText(MainActivity.this, "Лутфан савол ё фикрро нависед!", Toast.LENGTH_SHORT).show();
-                    resultTitle.setText("Хатогӣ: Майдони холӣ!");
-                    resultDescription.setText("Барои таҳлил кардани фаҳмиш, лутфан ягон маълумот ворид кунед.");
-                    return;
-                }
-
-                // Ҷавоби воқеӣ ва илмӣ ба саволи корбар
-                resultTitle.setText("Ҷавоби SHOGA ALL:");
-                String responseText = "Фаҳмиши ман ҳамчун зеҳни сунъӣ кам нест, баръакс ман ҳамаи забонҳои барномасозиро медонам ва қодирам кодҳои мураккаб, аз ҷумла Java, Android SDK, C++, Python ва ғайраро бехато нависам. Шумо саволи \"" + query + "\"-ро додед ва ман онро пурра таҳлил кардам!";
-                resultDescription.setText(responseText);
-
-                // Илова ба таърих
-                TextView historyItem = new TextView(MainActivity.this);
-                historyItem.setText("• " + query);
-                historyItem.setTextSize(13);
-                historyItem.setTextColor(Color.parseColor("#666666"));
-                historyItem.setPadding(0, 5, 0, 5);
-                historyLayout.addView(historyItem);
-
-                // Тоза кардани майдон
-                inputSkill.setText("");
-                Toast.makeText(MainActivity.this, "Таҳлил бо муваффақият анҷом ёфт!", Toast.LENGTH_SHORT).show();
+                calculate("+");
             }
         });
 
-        setContentView(scrollView);
+        btnSub.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                calculate("-");
+            }
+        });
+
+        btnMul.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                calculate("*");
+            }
+        });
+
+        btnDiv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                calculate("/");
+            }
+        });
+
+        setContentView(rootLayout);
+    }
+
+    private Button createButton(String text) {
+        Button btn = new Button(this);
+        btn.setText(text);
+        btn.setTextSize(18);
+        btn.setTextColor(Color.WHITE);
+        btn.setBackgroundColor(Color.parseColor("#3F51B5"));
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.WRAP_CONTENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT
+        );
+        params.setMargins(8, 0, 8, 0);
+        btn.setLayoutParams(params);
+        return btn;
+    }
+
+    private void calculate(String op) {
+        String s1 = inputNum1.getText().toString().trim();
+        String s2 = inputNum2.getText().toString().trim();
+
+        if (s1.isEmpty() || s2.isEmpty()) {
+            Toast.makeText(this, "Лутфан ҳарду майдонро пур кунед!", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        try {
+            double n1 = Double.parseDouble(s1);
+            double n2 = Double.parseDouble(s2);
+            double res = 0;
+
+            switch (op) {
+                :
+                res = n1 + n2;
+                break;
+                case "-":
+                res = n1 - n2;
+                break;
+                case "*":
+                res = n1 * n2;
+                break;
+                case "/":
+                if (n2 == 0) {
+                    Toast.makeText(this, "Хатогӣ: Тақсимкунӣ ба сифр мумкин нест!", Toast.LENGTH_LONG).show();
+                    return;
+                }
+                res = n1 / n2;
+                break;
+            }
+
+            textResult.setText("Натиҷа: " + res);
+
+        } catch (NumberFormatException e) {
+            Toast.makeText(this, "Хатогӣ: Рақами нодуруст ворид шудааст!", Toast.LENGTH_LONG).show();
+        }
     }
 }
