@@ -10,166 +10,124 @@ import android.widget.Toast;
 
 public class MainActivity extends Activity {
 
-    private EditText inputNumber1, inputNumber2, inputPassword;
+    private EditText inputNum1, inputNum2;
     private TextView textResult;
-    private Button btnAdd, btnSubtract, btnMultiply, btnDivide, btnLogin;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        // Сохтани интерфейс бо коди барномавӣ (Programmatic Layout)
-        android.widget.LinearLayout rootLayout = new android.widget.LinearLayout(this);
-        rootLayout.setOrientation(android.widget.LinearLayout.VERTICAL);
-        rootLayout.setPadding(32, 32, 32, 32);
-        rootLayout.setBackgroundColor(0xFF121212);
+        android.widget.LinearLayout layout = new android.widget.LinearLayout(this);
+        layout.setOrientation(android.widget.LinearLayout.VERTICAL);
+        layout.setPadding(32, 32, 32, 32);
 
-        // Title
         TextView title = new TextView(this);
-        title.setText("PATSAN PRO - Drip Client");
-        title.setTextColor(0xFF00E676);
-        title.setTextSize(22);
+        title.setText("Shoga Calculator");
+        title.setTextSize(24);
         title.setGravity(android.view.Gravity.CENTER);
-        rootLayout.addView(title);
+        layout.addView(title);
 
-        // Password Input
-        inputPassword = new EditText(this);
-        inputPassword.setHint("Паролро ворид кунед");
-        inputPassword.setInputType(android.text.InputType.TYPE_CLASS_TEXT | android.text.InputType.TYPE_TEXT_VARIATION_PASSWORD);
-        inputPassword.setTextColor(0xFFFFFFFF);
-        inputPassword.setHintTextColor(0xFF888888);
-        rootLayout.addView(inputPassword);
+        inputNum1 = new EditText(this);
+        inputNum1.setHint("Рақами якумро ворид кунед");
+        inputNum1.setInputType(android.text.InputType.TYPE_CLASS_NUMBER | android.text.InputType.TYPE_NUMBER_FLAG_DECIMAL);
+        layout.addView(inputNum1);
 
-        // Login Button
-        btnLogin = new Button(this);
-        btnLogin.setText("Санҷиши парол");
-        btnLogin.setBackgroundColor(0xFF00E676);
-        btnLogin.setTextColor(0xFF000000);
-        rootLayout.addView(btnLogin);
+        inputNum2 = new EditText(this);
+        inputNum2.setHint("Рақами дуюмро ворид кунед");
+        inputNum2.setInputType(android.text.InputType.TYPE_CLASS_NUMBER | android.text.InputType.TYPE_NUMBER_FLAG_DECIMAL);
+        layout.addView(inputNum2);
 
-        // Calculator inputs
-        inputNumber1 = new EditText(this);
-        inputNumber1.setHint("Рақами якум");
-        inputNumber1.setInputType(android.text.InputType.TYPE_CLASS_NUMBER | android.text.InputType.TYPE_NUMBER_FLAG_SIGNED);
-        inputNumber1.setTextColor(0xFFFFFFFF);
-        inputNumber1.setHintTextColor(0xFF888888);
-        rootLayout.addView(inputNumber1);
-
-        inputNumber2 = new EditText(this);
-        inputNumber2.setHint("Рақами дуюм");
-        inputNumber2.setInputType(android.text.InputType.TYPE_CLASS_NUMBER | android.text.InputType.TYPE_NUMBER_FLAG_SIGNED);
-        inputNumber2.setTextColor(0xFFFFFFFF);
-        inputNumber2.setHintTextColor(0xFF888888);
-        rootLayout.addView(inputNumber2);
-
-        // Buttons Layout
         android.widget.LinearLayout btnLayout = new android.widget.LinearLayout(this);
         btnLayout.setOrientation(android.widget.LinearLayout.HORIZONTAL);
+        btnLayout.setGravity(android.view.Gravity.CENTER);
 
-        btnAdd = new Button(this);
+        Button btnAdd = new Button(this);
         btnAdd.setText("+");
-        btnLayout.addView(btnAdd);
-
-        btnSubtract = new Button(this);
-        btnSubtract.setText("-");
-        btnLayout.addView(btnSubtract);
-
-        btnMultiply = new Button(this);
-        btnMultiply.setText("*");
-        btnLayout.addView(btnMultiply);
-
-        btnDivide = new Button(this);
-        btnDivide.setText("/");
-        btnLayout.addView(btnDivide);
-
-        rootLayout.addView(btnLayout);
-
-        // Result
-        textResult = new TextView(this);
-        textResult.setText("Натиҷа: ");
-        textResult.setTextColor(0xFFFFFFFF);
-        textResult.setTextSize(18);
-        rootLayout.addView(textResult);
-
-        setContentView(rootLayout);
-
-        // Logic
-        btnLogin.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String pass = inputPassword.getText().toString();
-                if (pass.isEmpty()) {
-                    Toast.makeText(MainActivity.this, "Лутфан паролро ворид кунед!", Toast.LENGTH_SHORT).show();
-                } else {
-                    Toast.makeText(MainActivity.this, "Парол қабул шуд: " + pass, Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
-
         btnAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                calculate('+');
+                calculate("+");
             }
         });
+        btnLayout.addView(btnAdd);
 
-        btnSubtract.setOnClickListener(new View.OnClickListener() {
+        Button btnSub = new Button(this);
+        btnSub.setText("-");
+        btnSub.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                calculate('-');
+                calculate("-");
             }
         });
+        btnLayout.addView(btnSub);
 
-        btnMultiply.setOnClickListener(new View.OnClickListener() {
+        Button btnMul = new Button(this);
+        btnMul.setText("*");
+        btnMul.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                calculate('*');
+                calculate("*");
             }
         });
+        btnLayout.addView(btnMul);
 
-        btnDivide.setOnClickListener(new View.OnClickListener() {
+        Button btnDiv = new Button(this);
+        btnDiv.setText("/");
+        btnDiv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                calculate('/');
+                calculate("/");
             }
         });
+        btnLayout.addView(btnDiv);
+
+        layout.addView(btnLayout);
+
+        textResult = new TextView(this);
+        textResult.setText("Натиҷа: ");
+        textResult.setTextSize(20);
+        textResult.setPadding(0, 32, 0, 0);
+        layout.addView(textResult);
+
+        setContentView(layout);
     }
 
-    private void calculate(char operator) {
-        String s1 = inputNumber1.getText().toString();
-        String s2 = inputNumber2.getText().toString();
+    private void calculate(String operator) {
+        String s1 = inputNum1.getText().toString().trim();
+        String s2 = inputNum2.getText().toString().trim();
 
         if (s1.isEmpty() || s2.isEmpty()) {
-            Toast.makeText(this, "Ҳарду майдон бояд пур карда шаванд!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Лутфан ҳарду майдонро пур кунед!", Toast.LENGTH_SHORT).show();
             return;
         }
 
         try {
-            double n1 = Double.parseDouble(s1);
-            double n2 = Double.parseDouble(s2);
-            double res = 0;
+            double num1 = Double.parseDouble(s1);
+            double num2 = Double.parseDouble(s2);
+            double result = 0;
 
             switch (operator) {
-                case '+':
-                    res = n1 + n2;
+                case "+":
+                    result = num1 + num2;
                     break;
-                case '-':
-                    res = n1 - n2;
+                case "-":
+                    result = num1 - num2;
                     break;
-                case '*':
-                    res = n1 * n2;
+                case "*":
+                    result = num1 * num2;
                     break;
-                case '/':
-                    if (n2 == 0) {
-                        Toast.makeText(this, "Тақсим кардан ба сифр мумкин нест!", Toast.LENGTH_SHORT).show();
+                case "/":
+                    if (num2 == 0) {
+                        Toast.makeText(this, "Тақсимкунӣ ба сифр мумкин нест!", Toast.LENGTH_SHORT).show();
                         return;
                     }
-                    res = n1 / n2;
+                    result = num1 / num2;
                     break;
             }
-            textResult.setText("Натиҷа: " + res);
+
+            textResult.setText("Натиҷа: " + result);
         } catch (NumberFormatException e) {
-            Toast.makeText(this, "Хатогӣ дар ворид кардани рақамҳо!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Лутфан рақами дуруст ворид кунед!", Toast.LENGTH_SHORT).show();
         }
     }
 }
