@@ -1,11 +1,11 @@
 package com.shoga.generated;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -16,181 +16,136 @@ import android.widget.Toast;
 
 public class MainActivity extends Activity {
 
-    private EditText passwordInput;
-    private LinearLayout loginLayout, panelLayout;
-    private Switch aimbotSwitch, headshotSwitch, noRecoilSwitch, speedSwitch;
+    private EditText passInput;
+    private Switch headshotSwitch, fpsSwitch, lagSwitch, bypassSwitch;
     private TextView statusText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        // Main Root Layout
+        // Main Layout (Gaming Style - Dark Theme & Neon Accents)
         LinearLayout rootLayout = new LinearLayout(this);
         rootLayout.setOrientation(LinearLayout.VERTICAL);
-        rootLayout.setBackgroundColor(Color.parseColor("#121212"));
-        rootLayout.setLayoutParams(new LinearLayout.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.MATCH_PARENT
-        ));
+        rootLayout.setBackgroundColor(Color.parseColor("#0A0A0C"));
         rootLayout.setPadding(30, 30, 30, 30);
 
         // Title
         TextView title = new TextView(this);
-        title.setText("SHOGA ALL VIP PANEL");
+        title.setText("PATSAN PRO PANEL");
         title.setTextColor(Color.parseColor("#00FF66"));
-        title.setTextSize(22);
+        title.setTextSize(24);
+        title.setTypeface(null, android.graphics.Typeface.BOLD);
         title.setGravity(Gravity.CENTER);
         title.setPadding(0, 20, 0, 40);
         rootLayout.addView(title);
 
-        // 1. LOGIN SECTION
-        loginLayout = new LinearLayout(this);
-        loginLayout.setOrientation(LinearLayout.VERTICAL);
-        loginLayout.setLayoutParams(new LinearLayout.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT
-        ));
-
-        TextView labelPass = new TextView(this);
-        labelPass.setText("Пароли даромадро ворид кунед (Парол: 777):");
-        labelPass.setTextColor(Color.WHITE);
-        labelPass.setTextSize(14);
-        loginLayout.addView(labelPass);
-
-        passwordInput = new EditText(this);
-        passwordInput.setHint("Парол");
-        passwordInput.setHintTextColor(Color.parseColor("#888888"));
-        passwordInput.setTextColor(Color.WHITE);
-        passwordInput.setInputType(android.text.InputType.TYPE_CLASS_NUMBER | android.text.InputType.TYPE_NUMBER_VARIATION_PASSWORD);
-        passwordInput.setBackgroundColor(Color.parseColor("#222222"));
-        passwordInput.setPadding(20, 20, 20, 20);
-        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT
-        );
-        params.setMargins(0, 20, 0, 20);
-        passwordInput.setLayoutParams(params);
-        loginLayout.addView(passwordInput);
-
-        Button loginBtn = new Button(this);
-        loginBtn.setText("Даромадан ба Панел");
-        loginBtn.setBackgroundColor(Color.parseColor("#00FF66"));
-        loginBtn.setTextColor(Color.BLACK);
-        loginBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String pass = passwordInput.getText().toString().trim();
-                if (pass.isEmpty()) {
-                    Toast.makeText(MainActivity.this, "Лутфан паролро ворид кунед!", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-                if (pass.equals("777")) {
-                    Toast.makeText(MainActivity.this, "Хуш омадед, Панел фаъол шуд!", Toast.LENGTH_LONG).show();
-                    loginLayout.setVisibility(View.GONE);
-                    panelLayout.setVisibility(View.VISIBLE);
-                } else {
-                    Toast.makeText(MainActivity.this, "Пароли нодуруст! Рамзи дуруст: 777", Toast.LENGTH_LONG).show();
-                }
-            }
-        });
-        loginLayout.addView(loginBtn);
-        rootLayout.addView(loginLayout);
-
-        // 2. PANEL SECTION (Hidden initially)
-        panelLayout = new LinearLayout(this);
-        panelLayout.setOrientation(LinearLayout.VERTICAL);
-        panelLayout.setLayoutParams(new LinearLayout.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT
-        ));
-        panelLayout.setVisibility(View.GONE);
-
+        // ScrollView for features
         ScrollView scrollView = new ScrollView(this);
         LinearLayout scrollContent = new LinearLayout(this);
         scrollContent.setOrientation(LinearLayout.VERTICAL);
 
+        // Password Section
+        TextView passLabel = new TextView(this);
+        passLabel.setText("ENTER ACTIVATION KEY:");
+        passLabel.setTextColor(Color.parseColor("#FFFFFF"));
+        scrollContent.addView(passLabel);
+
+        passInput = new EditText(this);
+        passInput.setHint("Enter Password");
+        passInput.setHintTextColor(Color.parseColor("#555555"));
+        passInput.setTextColor(Color.parseColor("#FFFFFF"));
+        passInput.setInputType(android.text.InputType.TYPE_CLASS_TEXT | android.text.InputType.TYPE_TEXT_VARIATION_PASSWORD);
+        scrollContent.addView(passInput);
+
+        Button loginBtn = createGamingButton("AUTHORIZE");
+        loginBtn.setOnClickListener(v -> {
+            String pass = passInput.getText().toString().trim();
+            if (pass.isEmpty()) {
+                Toast.makeText(MainActivity.this, "Error: Key field is empty!", Toast.LENGTH_SHORT).show();
+            } else if (pass.equals("PATSAN2025")) {
+                Toast.makeText(MainActivity.this, "Access Granted! Welcome Pro.", Toast.LENGTH_LONG).show();
+                statusText.setText("Status: ACTIVE");
+                statusText.setTextColor(Color.parseColor("#00FF66"));
+            } else {
+                Toast.makeText(MainActivity.this, "Invalid Key! Access Denied.", Toast.LENGTH_SHORT).show();
+            }
+        });
+        scrollContent.addView(loginBtn);
+
+        // Separator
+        View sep = new View(this);
+        sep.setMinimumHeight(5);
+        sep.setBackgroundColor(Color.parseColor("#222222"));
+        LinearLayout.LayoutParams sepParams = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT, 20);
+        sepParams.setMargins(0, 20, 0, 20);
+        sep.setLayoutParams(sepParams);
+        scrollContent.addView(sep);
+
+        // Status Display
         statusText = new TextView(this);
-        statusText.setText("Ҳолат: Бехатар (Anti-Ban 100%)");
-        statusText.setTextColor(Color.parseColor("#00FF66"));
+        statusText.setText("Status: LOCKED");
+        statusText.setTextColor(Color.parseColor("#FF3333"));
         statusText.setTextSize(16);
-        statusText.setPadding(0, 10, 0, 20);
+        statusText.setGravity(Gravity.CENTER);
         scrollContent.addView(statusText);
 
-        // Aimbot Switch
-        aimbotSwitch = new Switch(this);
-        aimbotSwitch.setText("AIMBOT 100% (Auto Headshot)");
-        aimbotSwitch.setTextColor(Color.WHITE);
-        aimbotSwitch.setTextSize(16);
-        aimbotSwitch.setPadding(0, 20, 0, 20);
-        aimbotSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            if (isChecked) {
-                Toast.makeText(MainActivity.this, "Aimbot фаъол шуд", Toast.LENGTH_SHORT).show();
-            } else {
-                Toast.makeText(MainActivity.this, "Aimbot хомӯш шуд", Toast.LENGTH_SHORT).show();
-            }
-        });
-        scrollContent.addView(aimbotSwitch);
+        // Switches for Pro Features
+        headshotSwitch = createGamingSwitch("AIMBOT HEADSHOT 100%");
+        fpsSwitch = createGamingSwitch("UNLOCK 90 FPS");
+        lagSwitch = createGamingSwitch("ANTI-LAG FIX");
+        bypassSwitch = createGamingSwitch("BYPASS ANTI-CHEAT");
 
-        // Headshot Switch
-        headshotSwitch = new Switch(this);
-        headshotSwitch.setText("MAGIC HEADSHOT (No Miss)");
-        headshotSwitch.setTextColor(Color.WHITE);
-        headshotSwitch.setTextSize(16);
-        headshotSwitch.setPadding(0, 20, 0, 20);
-        headshotSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            if (isChecked) {
-                Toast.makeText(MainActivity.this, "Headshot фаъол шуд", Toast.LENGTH_SHORT).show();
-            } else {
-                Toast.makeText(MainActivity.this, "Headshot хомӯш шуд", Toast.LENGTH_SHORT).show();
-            }
-        });
         scrollContent.addView(headshotSwitch);
+        scrollContent.addView(fpsSwitch);
+        scrollContent.addView(lagSwitch);
+        scrollContent.addView(bypassSwitch);
 
-        // No Recoil Switch
-        noRecoilSwitch = new Switch(this);
-        noRecoilSwitch.setText("NO RECOIL (Бе ларзиши силоҳ)");
-        noRecoilSwitch.setTextColor(Color.WHITE);
-        noRecoilSwitch.setTextSize(16);
-        noRecoilSwitch.setPadding(0, 20, 0, 20);
-        noRecoilSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            if (isChecked) {
-                Toast.makeText(MainActivity.this, "No Recoil фаъол шуд", Toast.LENGTH_SHORT).show();
-            } else {
-                Toast.makeText(MainActivity.this, "No Recoil хомӯш шуд", Toast.LENGTH_SHORT).show();
-            }
+        // Action Button
+        Button applyBtn = createGamingButton("APPLY CONFIG");
+        applyBtn.setOnClickListener(v -> {
+            StringBuilder sb = new StringBuilder("Applied:\n");
+            if (headshotSwitch.isChecked()) sb.append("- Headshot Aimbot\n");
+            if (fpsSwitch.isChecked()) sb.append("- 90 FPS Unlocked\n");
+            if (lagSwitch.isChecked()) sb.append("- Anti-Lag Enabled\n");
+            if (bypassSwitch.isChecked()) sb.append("- Bypass Active\n");
+            
+            AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+            builder.setTitle("PATSAN PANEL CONFIG");
+            builder.setMessage(sb.toString());
+            builder.setPositiveButton("OK", (dialog, which) -> dialog.dismiss());
+            builder.show();
         });
-        scrollContent.addView(noRecoilSwitch);
-
-        // Speed Switch
-        speedSwitch = new Switch(this);
-        speedSwitch.setText("SPEED HACK x2 (Суръати баланд)");
-        speedSwitch.setTextColor(Color.WHITE);
-        speedSwitch.setTextSize(16);
-        speedSwitch.setPadding(0, 20, 0, 30);
-        speedSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            if (isChecked) {
-                Toast.makeText(MainActivity.this, "Speed Hack фаъол шуд", Toast.LENGTH_SHORT).show();
-            } else {
-                Toast.makeText(MainActivity.this, "Speed Hack хомӯш шуд", Toast.LENGTH_SHORT).show();
-            }
-        });
-        scrollContent.addView(speedSwitch);
-
-        // Launch Game Button
-        Button launchGameBtn = new Button(this);
-        launchGameBtn.setText("КУШОДАНИ FREE FIRE");
-        launchGameBtn.setBackgroundColor(Color.parseColor("#FF5722"));
-        launchGameBtn.setTextColor(Color.WHITE);
-        launchGameBtn.setOnClickListener(v -> {
-            Toast.makeText(MainActivity.this, "Free Fire бо танзимоти SHOGA ALL оғоз мешавад...", Toast.LENGTH_LONG).show();
-        });
-        scrollContent.addView(launchGameBtn);
+        scrollContent.addView(applyBtn);
 
         scrollView.addView(scrollContent);
-        panelLayout.addView(scrollView);
-        rootLayout.addView(panelLayout);
+        rootLayout.addView(scrollView);
 
         setContentView(rootLayout);
+    }
+
+    private Button createGamingButton(String text) {
+        Button btn = new Button(this);
+        btn.setText(text);
+        btn.setTextColor(Color.parseColor("#FFFFFF"));
+        btn.setBackgroundColor(Color.parseColor("#1E1E24"));
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT, 120);
+        params.setMargins(0, 15, 0, 15);
+        btn.setLayoutParams(params);
+        return btn;
+    }
+
+    private Switch createGamingSwitch(String text) {
+        Switch sw = new Switch(this);
+        sw.setText(text);
+        sw.setTextColor(Color.parseColor("#CCCCCC"));
+        sw.setPadding(20, 20, 20, 20);
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        params.setMargins(0, 10, 0, 10);
+        sw.setLayoutParams(params);
+        return sw;
     }
 }
