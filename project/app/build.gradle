@@ -2,24 +2,13 @@ plugins {
     id 'com.android.application'
 }
 android {
-    namespace 'com.patsani.app'
-    compileSdk 34
+    namespace 'com.shoga.generated'
+    compileSdk 35
     defaultConfig {
-        applicationId "com.patsani.app"
-        minSdk 24
-        targetSdk 34
+        applicationId 'com.shoga.generated'
+        minSdk 23
+        targetSdk 35
         versionCode 1
-        versionName "1.0"
+        versionName '1.0'
     }
-    buildTypes {
-        release {
-            minifyEnabled false
-        }
-    }
-    compileOptions {
-        sourceCompatibility JavaVersion.VERSION_17
-        targetCompatibility JavaVersion.VERSION_17
-    }
-}
-dependencies {
 }
