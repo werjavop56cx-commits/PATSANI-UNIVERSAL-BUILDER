@@ -132,22 +132,22 @@ public class MainActivity extends Activity {
             double res = 0;
 
             switch (op) {
-                :
-                res = n1 + n2;
-                break;
+                case "+":
+                    res = n1 + n2;
+                    break;
                 case "-":
-                res = n1 - n2;
-                break;
+                    res = n1 - n2;
+                    break;
                 case "*":
-                res = n1 * n2;
-                break;
+                    res = n1 * n2;
+                    break;
                 case "/":
-                if (n2 == 0) {
-                    Toast.makeText(this, "Хатогӣ: Тақсимкунӣ ба сифр мумкин нест!", Toast.LENGTH_LONG).show();
-                    return;
-                }
-                res = n1 / n2;
-                break;
+                    if (n2 == 0) {
+                        Toast.makeText(this, "Хатогӣ: Тақсимкунӣ ба сифр мумкин нест!", Toast.LENGTH_LONG).show();
+                        return;
+                    }
+                    res = n1 / n2;
+                    break;
             }
 
             textResult.setText("Натиҷа: " + res);
