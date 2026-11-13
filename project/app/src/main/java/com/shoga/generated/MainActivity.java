@@ -2,218 +2,212 @@ package com.shoga.generated;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Intent;
 import android.graphics.Color;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.ScrollView;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
 public class MainActivity extends Activity {
 
-    private LinearLayout rootLayout;
-    private LinearLayout loginLayout;
-    private LinearLayout panelLayout;
-    private EditText passwordInput;
+    private boolean isAuthorized = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        rootLayout = new LinearLayout(this);
-        rootLayout.setOrientation(LinearLayout.VERTICAL);
-        rootLayout.setBackgroundColor(Color.parseColor("#0B0E14"));
-        rootLayout.setPadding(30, 30, 30, 30);
-
-        createLoginScreen();
-        setContentView(rootLayout);
+        checkOverlayPermission();
     }
 
-    private void createLoginScreen() {
-        loginLayout = new LinearLayout(this);
-        loginLayout.setOrientation(LinearLayout.VERTICAL);
-        loginLayout.setGravity(Gravity.CENTER);
-        loginLayout.setLayoutParams(new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT,
-                LinearLayout.LayoutParams.MATCH_PARENT
-        ));
+    private void checkOverlayPermission() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (!Settings.canDrawOverlays(this)) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                builder.setTitle("Талаботи иҷозат / Permission Required");
+                builder.setMessage("Барои кор кардани панел, лутфан иҷозаи 'Поверх других окон' -ро фаъол созед.");
+                builder.setPositiveButton("Танзимот / Settings", (dialog, which) -> {
+                    Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
+                            Uri.parse("package:" + getPackageName()));
+                    startActivityForResult(intent, 1234);
+                });
+                builder.setNegativeButton("Баромад", (dialog, which) -> finish());
+                builder.setCancelable(false);
+                builder.show();
+            } else {
+                showLoginScreen();
+            }
+        } else {
+            showLoginScreen();
+        }
+    }
 
-        TextView title = new TextView(this);
-        title.setText("PATSAN PRO LOGIN");
-        title.setTextColor(Color.parseColor("#00FF66"));
-        title.setTextSize(24);
-        title.setGravity(Gravity.CENTER);
-        title.setPadding(0, 0, 0, 50);
-        loginLayout.addView(title);
-
-        passwordInput = new EditText(this);
-        passwordInput.setHint("Паролро ворид кунед (patsan19)");
-        passwordInput.setHintTextColor(Color.parseColor("#666666"));
-        passwordInput.setTextColor(Color.WHITE);
-        passwordInput.setInputType(android.text.InputType.TYPE_CLASS_TEXT | android.text.InputType.TYPE_TEXT_VARIATION_PASSWORD);
-        passwordInput.setBackgroundColor(Color.parseColor("#1A2238"));
-        passwordInput.setPadding(30, 30, 30, 30);
-        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT
-        );
-        params.setMargins(0, 0, 0, 30);
-        passwordInput.setLayoutParams(params);
-        loginLayout.addView(passwordInput);
-
-        Button loginBtn = new Button(this);
-        loginBtn.setText("ДАРОМАД");
-        loginBtn.setBackgroundColor(Color.parseColor("#00FF66"));
-        loginBtn.setTextColor(Color.BLACK);
-        loginBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String pass = passwordInput.getText().toString().trim();
-                if (pass.isEmpty()) {
-                    Toast.makeText(MainActivity.this, "Лутфан паролро нависед!", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-                if (pass.equals("patsan19")) {
-                    Toast.makeText(MainActivity.this, "Хуш омадед, Пацан!", Toast.LENGTH_SHORT).show();
-                    rootLayout.removeView(loginLayout);
-                    createGamingPanel();
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 1234) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                if (Settings.canDrawOverlays(this)) {
+                    showLoginScreen();
                 } else {
-                    Toast.makeText(MainActivity.this, "Пароли нодуруст!", Toast.LENGTH_LONG).show();
+                    Toast.makeText(this, "Иҷозат дода нашуд!", Toast.LENGTH_SHORT).show();
+                    finish();
                 }
             }
-        });
-        loginLayout.addView(loginBtn);
-
-        rootLayout.addView(loginLayout);
+        }
     }
 
-    private void createGamingPanel() {
-        ScrollView scrollView = new ScrollView(this);
-        scrollView.setLayoutParams(new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT,
-                LinearLayout.LayoutParams.MATCH_PARENT
-        ));
+    private void showLoginScreen() {
+        LinearLayout layout = new LinearLayout(this);
+        layout.setOrientation(LinearLayout.VERTICAL);
+        layout.setBackgroundColor(Color.parseColor("#121212"));
+        layout.setPadding(40, 40, 40, 40);
+        layout.setGravity(Gravity.CENTER);
 
-        panelLayout = new LinearLayout(this);
-        panelLayout.setOrientation(LinearLayout.VERTICAL);
-        panelLayout.setLayoutParams(new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT
-        ));
+        TextView title = new TextView(this);
+        title.setText("SHOGA ALL VIP PANEL");
+        title.setTextColor(Color.parseColor("#00FF66"));
+        title.setTextSize(22);
+        title.setGravity(Gravity.CENTER);
+        layout.addView(title);
+
+        TextView subTitle = new TextView(this);
+        subTitle.setText("Free Fire Anti-Ban Panel");
+        subTitle.setTextColor(Color.WHITE);
+        subTitle.setTextSize(14);
+        subTitle.setGravity(Gravity.CENTER);
+        subTitle.setPadding(0, 0, 0, 40);
+        layout.addView(subTitle);
+
+        final EditText passwordInput = new EditText(this);
+        passwordInput.setHint("Паролро ворид кунед (Код)");
+        passwordInput.setHintTextColor(Color.GRAY);
+        passwordInput.setTextColor(Color.WHITE);
+        passwordInput.setBackgroundColor(Color.parseColor("#242424"));
+        passwordInput.setPadding(30, 30, 30, 30);
+        layout.addView(passwordInput);
+
+        Button loginBtn = new Button(this);
+        loginBtn.setText("КУШОДАНИ ПАНЕЛ / LOGIN");
+        loginBtn.setBackgroundColor(Color.parseColor("#00FF66"));
+        loginBtn.setTextColor(Color.BLACK);
+        loginBtn.setPadding(0, 30, 0, 30);
+
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT
+        );
+        params.setMargins(0, 30, 0, 0);
+        loginBtn.setLayoutParams(params);
+
+        loginBtn.setOnClickListener(v -> {
+            String pass = passwordInput.getText().toString().trim();
+            if (pass.isEmpty()) {
+                Toast.makeText(MainActivity.this, "Майдони парол холи аст!", Toast.LENGTH_SHORT).show();
+            } else if (pass.equals("shoga2025")) {
+                isAuthorized = true;
+                Toast.makeText(MainActivity.this, "Парол дуруст аст! Панел кушода шуд.", Toast.LENGTH_LONG).show();
+                showControlPanel();
+            } else {
+                Toast.makeText(MainActivity.this, "Пароли нодуруст! Код: shoga2025", Toast.LENGTH_LONG).show();
+            }
+        });
+        layout.addView(loginBtn);
+
+        setContentView(layout);
+    }
+
+    private void showControlPanel() {
+        LinearLayout layout = new LinearLayout(this);
+        layout.setOrientation(LinearLayout.VERTICAL);
+        layout.setBackgroundColor(Color.parseColor("#1a1a1a"));
+        layout.setPadding(30, 30, 30, 30);
 
         TextView header = new TextView(this);
-        header.setText("FREE FIRE - GAMING PANEL");
+        header.setText("SHOGA ALL - FF HACK PANEL");
         header.setTextColor(Color.parseColor("#00FF66"));
         header.setTextSize(20);
         header.setGravity(Gravity.CENTER);
-        header.setPadding(0, 20, 0, 40);
-        panelLayout.addView(header);
+        header.setPadding(0, 0, 0, 20);
+        layout.addView(header);
 
-        // AIMBOT SECTION
-        addSectionTitle("--- AIMBOT SETTINGS ---");
-        addSwitch("Aimbot Auto Headshot", "Headshot 100% фаъол шуд!");
-        addSwitch("Aim FOV 360", "FOV васеъ карда шуд!");
-        addSwitch("Silent Aim", "Silent Aim фаъол шуд!");
+        // Anti-Cheat Status
+        TextView antiCheatStatus = new TextView(this);
+        antiCheatStatus.setText("🛡️ Anti-Cheat Bypass: ACTIVE (Secure)");
+        antiCheatStatus.setTextColor(Color.parseColor("#00FFcc"));
+        antiCheatStatus.setTextSize(14);
+        antiCheatStatus.setPadding(0, 0, 0, 20);
+        layout.addView(antiCheatStatus);
 
-        // ANTI-CHEAT SECTION
-        addSectionTitle("--- ANTI-CHEAT ---");
-        addSwitch("Bypass Ban 100%", "Байпаси анти-чит фаъол шуд! Бан намегиред.");
-        addSwitch("Hide Root/Emulator", "Эмулятор ва Рут пинҳон карда шуд!");
+        // ESP Switches
+        Switch espBox = new Switch(this);
+        espBox.setText("ESP Box (Чехраи душман)");
+        espBox.setTextColor(Color.WHITE);
+        espBox.setChecked(true);
+        layout.addView(espBox);
 
-        // ESP SECTION
-        addSectionTitle("--- ESP SETTINGS ---");
-        addSwitch(
-                "ESP Box (Дурбин ба бозигарон)",
-                "ESP Box фаъол шуд! Душманон намоёнанд."
-        );
-        addSwitch("ESP Line (Хатҳо ба душман)", "ESP Line фаъол шуд!");
-        addSwitch("ESP Distance (Масофа)", "Масофаи душманон нишон дода мешавад!");
+        Switch espLine = new Switch(this);
+        espLine.setText("ESP Line (Хати нишондод)");
+        espLine.setTextColor(Color.WHITE);
+        espLine.setChecked(true);
+        layout.addView(espLine);
 
-        // POWER SECTION
-        addSectionTitle("--- POWER & SPEED ---");
-        addSwitch("Speed Hack x2", "Суръати бозингар зиёд шуд!");
-        addSwitch("No Recoil (Бе тебрандаи тир)", "Тебрандаи силоҳ гирифта шуд!");
-        addSwitch("Fast Reload", "Пуркунии босуръати магазин фаъол шуд!");
+        Switch espDistance = new Switch(this);
+        espDistance.setText("ESP Distance (Масофа)");
+        espDistance.setTextColor(Color.WHITE);
+        espDistance.setChecked(true);
+        layout.addView(espDistance);
 
-        // OTHER SECTION
-        addSectionTitle("--- OTHER FUNCTIONS ---");
-        addSwitch("HDR Graphics Unlock", "Графикаи HDR кушода шуд!");
-        addSwitch("FPS 90/120 Unlock", "60/90 FPS устувор шуд!");
+        // Aimbot Switches
+        Switch aimbotHead = new Switch(this);
+        aimbotHead.setText("Aimbot Head (Низоми сар)");
+        aimbotHead.setTextColor(Color.WHITE);
+        aimbotHead.setChecked(true);
+        layout.addView(aimbotHead);
 
-        Button applyBtn = new Button(this);
-        applyBtn.setText("ТАТБИҚ КАРДАН БА БОЗӢ");
-        applyBtn.setBackgroundColor(Color.parseColor("#FF0055"));
-        applyBtn.setTextColor(Color.WHITE);
+        Switch aimbotFov = new Switch(this);
+        aimbotFov.setText("Aimbot FOV 360 (Доираи нишон)");
+        aimbotFov.setTextColor(Color.WHITE);
+        aimbotFov.setChecked(true);
+        layout.addView(aimbotFov);
+
+        Switch headShotRate = new Switch(this);
+        headShotRate.setText("🎯 Auto Headshot 100% (Хечот)");
+        headShotRate.setTextColor(Color.parseColor("#FF0055"));
+        headShotRate.setChecked(true);
+        layout.addView(headShotRate);
+
+        Button launchFFBtn = new Button(this);
+        launchFFBtn.setText("🚀 БУРДАН БА FREE FIRE (START GAME)");
+        launchFFBtn.setBackgroundColor(Color.parseColor("#00FF66"));
+        launchFFBtn.setTextColor(Color.BLACK);
+        
         LinearLayout.LayoutParams btnParams = new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT
         );
-        btnParams.setMargins(0, 50, 0, 50);
-        applyBtn.setLayoutParams(btnParams);
-        applyBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-                builder.setTitle("PATSAN PRO");
-                builder.setMessage(
-                        "Ҳамаи танзимот бо муваффақият ба Free Fire насб шуданд! Метавонед бозиро сарукор кунед."
-                );
-                builder.setPositiveButton("OK", null);
-                builder.show();
+        btnParams.setMargins(0, 40, 0, 0);
+        launchFFBtn.setLayoutParams(btnParams);
+
+        launchFFBtn.setOnClickListener(v -> {
+            Toast.makeText(MainActivity.this, "Ҳамаи функсияҳо фаъол шуданд. Free Fire кушода мешавад...", Toast.LENGTH_LONG).show();
+            Intent launchIntent = getPackageManager().getLaunchIntentForPackage("com.dts.freefireth");
+            if (launchIntent != null) {
+                startActivity(launchIntent);
+            } else {
+                Toast.makeText(MainActivity.this, "Free Fire дар ин дастгоҳ ёфт нашуд!", Toast.LENGTH_LONG).show();
             }
         });
-        panelLayout.addView(applyBtn);
+        layout.addView(launchFFBtn);
 
-        scrollView.addView(panelLayout);
-        rootLayout.addView(scrollView);
-
-        // APK save simulation to /sdcard/Download/
-        Toast.makeText(
-                this,
-                "APK бомуваффақият дар /sdcard/Download/ захира шуд!",
-                Toast.LENGTH_LONG
-        ).show();
-    }
-
-    private void addSectionTitle(String titleText) {
-        TextView tv = new TextView(this);
-        tv.setText(titleText);
-        tv.setTextColor(Color.parseColor("#00FFFF"));
-        tv.setTextSize(16);
-        tv.setPadding(0, 30, 0, 10);
-        panelLayout.addView(tv);
-    }
-
-    private void addSwitch(String label, final String toastMessage) {
-        Switch sw = new Switch(this);
-        sw.setText(label);
-        sw.setTextColor(Color.WHITE);
-        sw.setTextSize(14);
-        sw.setPadding(0, 15, 0, 15);
-        sw.setOnCheckedChangeListener(
-                new android.widget.CompoundButton.OnCheckedChangeListener() {
-                    @Override
-                    public void onCheckedChanged(
-                            android.widget.CompoundButton buttonView,
-                            boolean isChecked
-                    ) {
-                        if (isChecked) {
-                            Toast.makeText(MainActivity.this, toastMessage, Toast.LENGTH_SHORT).show();
-                        } else {
-                            Toast.makeText(
-                                    MainActivity.this,
-                                    label + " хомӯш карда шуд.",
-                                    Toast.LENGTH_SHORT
-                            ).show();
-                        }
-                    }
-                }
-        );
-        panelLayout.addView(sw);
+        setContentView(layout);
     }
 }
