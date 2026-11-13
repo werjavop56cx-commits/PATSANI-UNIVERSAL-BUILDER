@@ -1,66 +1,91 @@
 package com.shoga.generated;
 
-import android.graphics.Color;
+import android.app.Activity;
 import android.os.Bundle;
-import android.view.Gravity;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.LinearLayout;
+import android.widget.GridLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-import androidx.appcompat.app.AppCompatActivity;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends Activity {
+    private EditText display;
+    private String currentInput = "";
+    private double val1 = 0, val2 = 0;
+    private String operator = "";
+    private boolean isLocked = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        // Layout settings
-        LinearLayout layout = new LinearLayout(this);
-        layout.setOrientation(LinearLayout.VERTICAL);
-        layout.setGravity(Gravity.CENTER);
-        layout.setPadding(50, 50, 50, 50);
-        layout.setBackgroundColor(Color.parseColor("#121212"));
+        GridLayout gridLayout = new GridLayout(this);
+        gridLayout.setColumnCount(4);
+        gridLayout.setPadding(16, 16, 16, 16);
 
-        TextView title = new TextView(this);
-        title.setText("TJ PATSAN PROFILE");
-        title.setTextColor(Color.CYAN);
-        title.setTextSize(24);
-        title.setGravity(Gravity.CENTER);
-        layout.addView(title);
+        display = new EditText(this);
+        display.setTextSize(32);
+        display.setFocusable(false);
+        display.setLayoutParams(new GridLayout.LayoutParams(GridLayout.spec(0, 4), GridLayout.spec(0)));
+        gridLayout.addView(display);
 
-        EditText passwordInput = new EditText(this);
-        passwordInput.setHint("Паролро ворид кунед");
-        passwordInput.setTextColor(Color.WHITE);
-        passwordInput.setHintTextColor(Color.GRAY);
-        passwordInput.setInputType(129); // Password type
-        layout.addView(passwordInput);
+        String[] buttons = {
+            "7", "8", "9", "/",
+            "4", "5", "6", "*",
+            "1", "2", "3", "-",
+            "C", "0", "=", "+"
+        };
 
-        Button loginButton = new Button(this);
-        loginButton.setText("Даромадан");
-        loginButton.setBackgroundColor(Color.parseColor("#00796B"));
-        loginButton.setTextColor(Color.WHITE);
-        layout.addView(loginButton);
+        for (String btnText : buttons) {
+            Button btn = new Button(this);
+            btn.setText(btnText);
+            btn.setOnClickListener(v -> {
+                if (isLocked) {
+                    checkPassword(btnText);
+                } else {
+                    onCalcClick(btnText);
+                }
+            });
+            gridLayout.addView(btn);
+        }
 
-        loginButton.setOnClickListener(v -> {
-            String input = passwordInput.getText().toString();
-            if (input.equals("patsan")) {
-                Toast.makeText(this, "Хуш омадед, Патсан!", Toast.LENGTH_LONG).show();
-                title.setText("ПРОФИЛИ ТУ: TJ PATSAN\nСтатус: Фаъол");
-                title.setTextColor(Color.GREEN);
-            } else {
-                Toast.makeText(this, "Парол нодуруст аст!", Toast.LENGTH_SHORT).show();
+        setContentView(gridLayout);
+    }
+
+    private void checkPassword(String input) {
+        currentInput += input;
+        if (currentInput.equals("patsan")) {
+            isLocked = false;
+            display.setText("");
+            currentInput = "";
+        } else if (currentInput.length() >= 6) {
+            currentInput = "";
+        }
+    }
+
+    private void onCalcClick(String text) {
+        if (text.equals("C")) {
+            currentInput = "";
+            display.setText("");
+        } else if (text.equals("=")) {
+            val2 = Double.parseDouble(currentInput);
+            double res = 0;
+            switch (operator) {
+                case "+": res = val1 + val2; break;
+                case "-": res = val1 - val2; break;
+                case "*": res = val1 * val2; break;
+                case "/": res = val2 != 0 ? val1 / val2 : 0; break;
             }
-        });
-
-        setContentView(layout);
+            display.setText(String.valueOf(res));
+            currentInput = String.valueOf(res);
+        } else if ("+-*/".contains(text)) {
+            operator = text;
+            val1 = Double.parseDouble(currentInput);
+            currentInput = "";
+        } else {
+            currentInput += text;
+            display.setText(currentInput);
+        }
     }
 }
-
-/* 
-Gradle Dependencies Required:
-dependencies {
-    implementation 'androidx.appcompat:appcompat:1.7.0'
-}
-*/
