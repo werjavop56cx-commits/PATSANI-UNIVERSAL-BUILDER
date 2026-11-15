@@ -1,102 +1,73 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/bg_dark">
+    android:background="@color/game_background"
+    android:orientation="vertical"
+    android:padding="16dp">
 
-    <LinearLayout
-        android:id="@+id/menuLayout"
+    <TextView
+        android:id="@+id/tvComputerCardCount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/white"
+        android:textSize="18sp" />
+
+    <View
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+
+    <TextView
+        android:id="@+id/tvStatus"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:gravity="center"
-        android:padding="24dp">
+        android:textColor="@color/yellow"
+        android:textSize="22sp"
+        android:textStyle="bold" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="SHOGA AI DURAK"
-            android:textSize="32sp"
-            android:textStyle="bold"
-            android:textColor="@color/accent"
-            android:layout_marginBottom="40dp"/>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
 
-        <Button
-            android:id="@+id/btnStartGame"
-            android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:text="Оғози бозӣ"
-            android:textSize="18sp"
-            android:textColor="@color/white"
-            android:backgroundTint="@color/primary"
-            android:layout_marginBottom="16dp"/>
-
-        <Button
-            android:id="@+id/btnExit"
-            android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:text="Баромад"
-            android:textSize="18sp"
-            android:textColor="@color/white"
-            android:backgroundTint="@color/secondary"/>
-    </LinearLayout>
+    <TextView
+        android:id="@+id/tvPlayerCards"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/white"
+        android:textSize="20sp"
+        android:textStyle="bold" />
 
     <LinearLayout
-        android:id="@+id/gameLayout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:visibility="gone"
-        android:padding="16dp">
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="16dp">
 
-        <GridLayout
-            android:id="@+id/gridAI"
-            android:layout_width="match_parent"
+        <Button
+            android:id="@+id/btnThrow"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:columnCount="6"
-            android:gravity="center"/>
-
-        <TextView
-            android:id="@+id/tvStatus"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Статус"
-            android:textSize="16sp"
-            android:textColor="@color/white"
-            android:gravity="center"
-            android:layout_marginVertical="16dp"/>
-
-        <GridLayout
-            android:id="@+id/gridTable"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
             android:layout_weight="1"
-            android:columnCount="3"
-            android:gravity="center"/>
+            android:text="Партофтан" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
+        <Button
+            android:id="@+id/btnTake"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center"
-            android:layout_marginBottom="10dp">
-            <Button
-                android:id="@+id/btnAttack"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Ҳамла"/>
-            <Button
-                android:id="@+id/btnPass"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Бипарто"/>
-        </LinearLayout>
+            android:layout_weight="1"
+            android:layout_marginStart="8dp"
+            android:text="Гирифтан" />
 
-        <GridLayout
-            android:id="@+id/gridPlayer"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:columnCount="6"
-            android:gravity="center"/>
     </LinearLayout>
-</RelativeLayout>
+
+    <Button
+        android:id="@+id/btnRestart"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="Бозии Нав" />
+
+</LinearLayout>
