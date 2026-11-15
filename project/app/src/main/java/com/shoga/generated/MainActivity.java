@@ -30,7 +30,7 @@ public class MainActivity extends AppCompatActivity {
                 v.startAnimation(AnimationUtils.loadAnimation(MainActivity.this, R.anim.fade_in));
                 String code = inputCode.getText().toString().trim();
                 if (code.isEmpty()) {
-                    Toast.makeText(MainActivity.Context, "Лутфан рамзро ворид кунед!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MainActivity.this, "Лутфан рамзро ворид кунед!", Toast.LENGTH_SHORT).show();
                     return;
                 }
 
