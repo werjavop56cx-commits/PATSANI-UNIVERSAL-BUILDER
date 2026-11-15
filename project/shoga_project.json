@@ -1,10 +1,13 @@
 {
-  "app_name": "Shoga Dual Game",
+  "app_name": "Shoga WalkieTalkie",
   "package": "com.shoga.generated",
   "permissions": [
+    "android.permission.INTERNET",
     "android.permission.ACCESS_WIFI_STATE",
-    "android.permission.CHANGE_WIFI_STATE",
-    "android.permission.ACCESS_NETWORK_STATE"
+    "android.permission.CHANGE_WIFI_MULTICAST_STATE",
+    "android.permission.ACCESS_NETWORK_STATE",
+    "android.permission.RECORD_AUDIO",
+    "android.permission.MODIFY_AUDIO_SETTINGS"
   ],
   "dependencies": [],
   "has_native_cpp": false,
