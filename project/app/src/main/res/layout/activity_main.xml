@@ -2,50 +2,83 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#121212"
-    android:gravity="center"
     android:orientation="vertical"
-    android:padding="24dp">
+    android:background="#121212">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="SHOGA WALKIE-TALKIE"
-        android:textColor="#00E676"
-        android:textSize="24sp"
-        android:textStyle="bold"
-        android:layout_marginBottom="32dp"/>
-
-    <TextView
-        android:id="@+id/tvStatus"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center"
-        android:text="Ҳолат: Қатъ шудааст"
-        android:textColor="#B0BEC5"
-        android:textSize="16sp"
-        android:layout_marginBottom="48dp"/>
+        android:orientation="horizontal"
+        android:background="#1F1F1F"
+        android:padding="12dp">
 
-    <Button
-        android:id="@+id/btnConnect"
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="SHOGA AI"
+            android:textColor="#00E676"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <Button
+            android:id=""@+id/btnClear""
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Тоза кардан"
+            android:backgroundTint="#333333"
+            android:textColor="#FFFFFF"
+            android:layout_marginRight="8dp"/>
+
+        <Button
+            android:id=""@+id/btnSettings""
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Танзимот"
+            android:backgroundTint="#333333"
+            android:textColor="#FFFFFF"/>
+    </LinearLayout>
+
+    <ScrollView
+        android:id=""@+id/scrollView""
         android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:backgroundTint="#2E7D32"
-        android:text="Пайваст шудан ба Wi-Fi"
-        android:textColor="#FFFFFF"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        android:layout_marginBottom="24dp"/>
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:padding="8dp">
 
-    <Button
-        android:id="@+id/btnTalk"
-        android:layout_width="220dp"
-        android:layout_height="220dp"
-        android:backgroundTint="#1565C0"
-        android:enabled="false"
-        android:text="БАРОИ ГАП ЗАНДАН ПАХШ КУНЕД"
-        android:textColor="#FFFFFF"
-        android:textSize="18sp"
-        android:textStyle="bold"/>
+        <LinearLayout
+            android:id=""@+id/chatContainer""
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" />
+    </ScrollView>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:background="#1F1F1F"
+        android:padding="8dp">
+
+        <EditText
+            android:id=""@+id/inputMessage""
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:hint="Саволи худро нависед..."
+            android:textColor="#FFFFFF"
+            android:textColorHint="#888888"
+            android:background="#2C2C2C"
+            android:padding="12dp"
+            android:layout_marginRight="8dp"/>
+
+        <Button
+            android:id=""@+id/btnSend""
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Фиристодан"
+            android:backgroundTint="#00E676"
+            android:textColor="#000000"/>
+    </LinearLayout>
 
 </LinearLayout>
