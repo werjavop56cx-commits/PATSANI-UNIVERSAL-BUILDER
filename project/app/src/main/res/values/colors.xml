@@ -4,4 +4,8 @@
     <color name="primary_dark">#0D47A1</color>
     <color name="accent">#00E676</color>
     <color name="background">#121212</color>
+
+    <color name="shoga_accent">#00E676</color>
+    <color name="shoga_primary_dark">#0D47A1</color>
+
 </resources>
