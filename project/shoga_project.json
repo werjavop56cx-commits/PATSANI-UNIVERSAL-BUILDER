@@ -1,11 +1,12 @@
 {
-  "app_name": "SHOGA AI",
+  "app_name": "SHOGA AI Durak",
   "package": "com.shoga.generated",
-  "permissions": [
-    "android.permission.INTERNET",
-    "android.permission.ACCESS_NETWORK_STATE"
+  "permissions": [],
+  "dependencies": [
+    "androidx.appcompat:appcompat:1.6.1",
+    "com.google.android.material:material:1.9.0",
+    "androidx.constraintlayout:constraintlayout:2.1.4"
   ],
-  "dependencies": [],
   "has_native_cpp": false,
   "has_service": false
 }
