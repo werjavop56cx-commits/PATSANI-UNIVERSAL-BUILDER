@@ -3,34 +3,82 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="16dp"
-    android:background="@color/background_dark">
+    android:padding="24dp"
+    android:gravity="center"
+    android:background="#121212">
 
     <TextView
-        android:id="@+id/txtStatus"
-        android:layout_width="match_parent"
+        android:id="tvTitle"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Барои оғоз тугмаро пахш кунед"
-        android:textColor="@color/text_white"
-        android:textSize="18sp"
-        android:gravity="center"
-        android:padding="10dp"/>
+        android:text="SHOGA DUAL GAME"
+        android:textSize="28sp"
+        android:textStyle="bold"
+        android:textColor="#00E676"
+        android:layout_marginBottom="16dp"/>
+
+    <TextView
+        android:id="tvStatus"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Ҳолати пайвастшавӣ интизор аст..."
+        android:textSize="14sp"
+        android:textColor="#B0BEC5"
+        android:layout_marginBottom="24dp"
+        android:gravity="center"/>
 
     <Button
-        android:id="@+id/btnScan"
+        android:id="btnConnectWifi"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Скан кардани Wi-Fi"
-        android:backgroundTint="@color/primary"
-        android:textColor="@color/white"
-        android:layout_marginTop="10dp"
-        android:layout_marginBottom="10dp"/>
+        android:text="Пайваст бо Wi-Fi (2 нафар)"
+        android:backgroundTint="#1E88E5"
+        android:textColor="#FFFFFF"
+        android:layout_marginBottom="12dp"/>
 
-    <ListView
-        android:id="@+id/listView"
+    <Button
+        android:id="btnConnectBot"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:divider="@color/primary"
-        android:dividerHeight="1dp"/>
+        android:layout_height="wrap_content"
+        android:text="Пайваст бо Бот (1 нафар)"
+        android:backgroundTint="#00ACC1"
+        android:textColor="#FFFFFF"
+        android:layout_marginBottom="24dp"/>
+
+    <TextView
+        android:id="tvScore"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Хол: 0"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:textColor="#FFEB3B"
+        android:layout_marginBottom="24dp"/>
+
+    <Button
+        android:id="btnEasy"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Осон"
+        android:backgroundTint="#43A047"
+        android:textColor="#FFFFFF"
+        android:layout_marginBottom="12dp"/>
+
+    <Button
+        android:id="btnHarder"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Кин"
+        android:backgroundTint="#FB8C00"
+        android:textColor="#FFFFFF"
+        android:layout_marginBottom="12dp"/>
+
+    <Button
+        android:id="btnKinтар"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Кинтар"
+        android:backgroundTint="#E53935"
+        android:textColor="#FFFFFF"/>
 
 </LinearLayout>

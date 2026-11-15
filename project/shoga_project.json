@@ -1,17 +1,12 @@
 {
-  "app_name": "Shoga WiFi Scanner",
+  "app_name": "Shoga Dual Game",
   "package": "com.shoga.generated",
   "permissions": [
     "android.permission.ACCESS_WIFI_STATE",
     "android.permission.CHANGE_WIFI_STATE",
-    "android.permission.ACCESS_FINE_LOCATION",
-    "android.permission.ACCESS_COARSE_LOCATION"
+    "android.permission.ACCESS_NETWORK_STATE"
   ],
-  "dependencies": [
-    "androidx.appcompat:appcompat:1.6.1",
-    "com.google.android.material:material:1.9.0",
-    "androidx.constraintlayout:constraintlayout:2.1.4"
-  ],
+  "dependencies": [],
   "has_native_cpp": false,
   "has_service": false
 }
