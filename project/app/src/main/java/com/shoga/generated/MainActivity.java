@@ -58,7 +58,7 @@ public class MainActivity extends AppCompatActivity {
         btnExit.setOnClickListener(v -> finish());
 
         btnAttack.setOnClickListener(v -> {
-            Toast.Text(this, "Интихоби корт барои ҳамла", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Интихоби корт барои ҳамла", Toast.LENGTH_SHORT).show();
         });
 
         btnPass.setOnClickListener(v -> {
