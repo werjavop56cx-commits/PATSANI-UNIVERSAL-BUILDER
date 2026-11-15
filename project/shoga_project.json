@@ -1,11 +1,12 @@
 {
-  "app_name": "SHOGA Calculator",
+  "app_name": "ShogaAPK Optimizer",
   "package": "com.shoga.generated",
   "permissions": [],
   "dependencies": [
     "androidx.appcompat:appcompat:1.7.0",
     "com.google.android.material:material:1.12.0",
-    "androidx.constraintlayout:constraintlayout:2.1.4"
+    "androidx.activity:activity:1.9.3",
+    "androidx.constraintlayout:constraintlayout:2.2.0"
   ],
   "has_native_cpp": false,
   "has_service": false

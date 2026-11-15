@@ -1,12 +1,12 @@
 <?xml version='1.0' encoding='utf-8'?>
 <resources>
-    <color name="bg_dark">#121212</color>
-    <color name="bg_button">#1E1E1E</color>
+    <color name="bg_dark">#121420</color>
+    <color name="card_bg">#1E2235</color>
+    <color name="accent">#6C63FF</color>
+    <color name="accent_secondary">#00E676</color>
     <color name="text_primary">#FFFFFF</color>
-    <color name="text_secondary">#9E9E9E</color>
-    <color name="accent_yellow">#FFB300</color>
-    <color name="accent_red">#E53935</color>
-    <color name="accent_green">#43A047</color>
+    <color name="text_secondary">#94A3B8</color>
+    <color name="white">#FFFFFF</color>
     <color name="shoga_primary">#3157D5</color>
     <color name="shoga_primary_dark">#203B9C</color>
     <color name="shoga_accent">#00BFA5</color>

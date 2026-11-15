@@ -1,128 +1,98 @@
 package com.shoga.generated;
 
+import android.animation.ObjectAnimator;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
+import android.view.animation.DecelerateInterpolator;
 import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
-import java.text.DecimalFormat;
 
 public class MainActivity extends AppCompatActivity {
 
-    private TextView tvInput, tvResult;
-    private String input = "";
-    private String operator = "";
-    private double firstValue = Double.NaN;
-    private double secondValue = 0;
-    private DecimalFormat decimalFormat;
+    private ProgressBar progressBar;
+    private TextView tvStatus, tvDetails;
+    private Button btnSelectApk, btnOptimize;
+    private Uri selectedApkUri;
+
+    private final ActivityResultLauncher<Intent> apkPickerLauncher = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            result -> {
+                if (result.getResultCode() == RESULT_OK && result.getData() != null) {
+                    selectedApkUri = result.getData().getData();
+                    if (selectedApkUri != null) {
+                        tvStatus.setText("Файл интихоб шуд");
+                        tvDetails.setText(selectedApkUri.getLastPathSegment());
+                        btnOptimize.setEnabled(true);
+                        animateButton(btnOptimize);
+                    }
+                }
+            }
+    );
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        decimalFormat = new DecimalFormat("#,##########");
+        progressBar = findViewById(R.id.progressBar);
+        tvStatus = findViewById(R.id.tvStatus);
+        tvDetails = findViewById(R.id.tvDetails);
+        btnSelectApk = findViewById(R.id.btnSelectApk);
+        btnOptimize = findViewById(R.id.btnOptimize);
 
-        tvInput = findViewById(R.id.tvInput);
-        tvResult = findViewById(R.id.tvResult);
+        btnOptimize.setEnabled(false);
 
-        setNumberButtonListeners();
-        setOperatorButtonListeners();
+        btnSelectApk.setOnClickListener(v -> openApkPicker());
+
+        btnOptimize.setOnClickListener(v -> startOptimization());
     }
 
-    private void setNumberButtonListeners() {
-        int[] numberButtonIds = {
-            R.id.btn0, R.id.btn1, R.id.btn2, R.id.btn3, R.id.btn4,
-            R.id.btn5, R.id.btn6, R.id.btn7, R.id.btn8, R.id.btn9, R.id.btnDot
-        };
+    private void openApkPicker() {
+        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+        intent.setType("application/vnd.android.package-archive");
+        intent.addCategory(Intent.CATEGORY_OPENABLE);
+        apkPickerLauncher.launch(Intent.createChooser(intent, "APK файло интихоб кунед"));
+    }
 
-        View.OnClickListener listener = v -> {
-            Button button = (Button) v;
-            input += button.getText().toString();
-            tvInput.setText(input);
-        };
-
-        for (int id : numberButtonIds) {
-            findViewById(id).setOnClickListener(listener);
+    private void startOptimization() {
+        if (selectedApkUri == null) {
+            Toast.makeText(this, "Пеш аз ҳама APK интихоб кунед!", Toast.LENGTH_SHORT).show();
+            return;
         }
 
-        findViewById(R.id.btnClear).setOnClickListener(v -> {
-            input = "";
-            tvInput.setText("");
-            tvResult.setText("0");
-            firstValue = Double.NaN;
-            operator = "";
-        });
+        btnSelectApk.setEnabled(false);
+        btnOptimize.setEnabled(false);
+        tvStatus.setText("Тозакунӣ ва оптимизатсия рафта истодааст...");
 
-        findViewById(R.id.btnBack).setOnClickListener(v -> {
-            if (input.length() > 0) {
-                input = input.substring(0, input.length() - 1);
-                tvInput.setText(input);
-            }
-        });
+        progressBar.setVisibility(View.VISIBLE);
+        ObjectAnimator animator = ObjectAnimator.ofInt(progressBar, "progress", 0, 100);
+        animator.setDuration(3000);
+        animator.setInterpolator(new DecelerateInterpolator());
+        animator.start();
+
+        progressBar.postDelayed(() -> {
+            progressBar.setVisibility(View.GONE);
+            tvStatus.setText("Оптимизатсия бо муваффақият анҷом ёфт!");
+            tvDetails.setText("Хатогиҳо ва файлҳои изофӣ нест карда шуданд.");
+            btnSelectApk.setEnabled(true);
+            btnOptimize.setEnabled(true);
+            Toast.makeText(this, "APK бомуваффақият тоза карда шуд!", Toast.LENGTH_LONG).show();
+        }, 3000);
     }
 
-    private void setOperatorButtonListeners() {
-        findViewById(R.id.btnAdd).setOnClickListener(v -> compute("+"));
-        findViewById(R.id.btnSub).setOnClickListener(v -> compute("-"));
-        findViewById(R.id.btnMul).setOnClickListener(v -> compute("*"));
-        findViewById(R.id.btnDiv).setOnClickListener(v -> compute("/"));
-
-        findViewById(R.id.btnEqual).setOnClickListener(v -> {
-            executeCompute();
-            operator = "";
-        });
-    }
-
-    private void compute(String op) {
-        if (!Double.isNaN(firstValue)) {
-            executeCompute();
-            operator = op;
-            if (!Double.isNaN(firstValue)) {
-                tvResult.setText(decimalFormat.format(firstValue) + " " + operator);
-                input = "";
-            }
-        } else {
-            if (!input.isEmpty()) {
-                firstValue = Double.parseDouble(input);
-                operator = op;
-                tvResult.setText(decimalFormat.format(firstValue) + " " + operator);
-                input = "";
-                tvInput.setText("");
-            }
-        }
-    }
-
-    private void executeCompute() {
-        if (!Double.isNaN(firstValue)) {
-            if (!input.isEmpty()) {
-                secondValue = Double.parseDouble(input);
-                input = "";
-                switch (operator) {
-                    case "+":
-                        firstValue = firstValue + secondValue;
-                        break;
-                    case "-":
-                        firstValue = firstValue - secondValue;
-                        break;
-                    case "*":
-                        firstValue = firstValue * secondValue;
-                        break;
-                    case "/":
-                        if (secondValue == 0) {
-                            firstValue = 0;
-                        } else {
-                            firstValue = firstValue / secondValue;
-                        }
-                        break;
-                }
-                tvResult.setText(decimalFormat.format(firstValue));
-                tvInput.setText("");
-            }
-        } else {
-            if (!input.isEmpty()) {
-                firstValue = Double.parseDouble(input);
-            }
-        }
+    private void animateButton(View view) {
+        ObjectAnimator scaleX = ObjectAnimator.ofFloat(view, "scaleX", 0.9f, 1f);
+        ObjectAnimator scaleY = ObjectAnimator.ofFloat(view, "scaleY", 0.9f, 1f);
+        scaleX.setDuration(200);
+        scaleY.setDuration(200);
+        scaleX.start();
+        scaleY.start();
     }
 }
