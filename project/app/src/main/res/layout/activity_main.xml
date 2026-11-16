@@ -2,61 +2,56 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/background_dark"
+    android:gravity="center"
     android:orientation="vertical"
-    android:padding="16dp"
-    android:background="@color/background">
+    android:padding="24dp">
 
     <TextView
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="SHOGA CODE OPTIMIZER"
-        android:textSize="22sp"
+        android:text="БОЗИИ МОРАК"
+        android:textColor="@color/primary_gold"
+        android:textSize="28sp"
         android:textStyle="bold"
-        android:textColor="@color/primary"
-        android:gravity="center"
-        android:layout_marginBottom="16dp"/>
+        android:layout_marginBottom="32dp" />
 
-    <EditText
-        android:id="@+id/inputCode"
-        android:layout_width="match_parent"
-        android:layout_height="150dp"
-        android:hint="Рамзи худро инҷо нависед..."
-        android:gravity="top|start"
-        android:inputType="textMultiLine"
-        android:background="@drawable/edit_text_bg"
-        android:padding="12dp"
-        android:textColor="@color/text_color"
-        android:textColorHint="@color/hint_color"
-        android:textSize="14sp"/>
+    <TextView
+        android:id="@+id/tvScore"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Холҳо: 0"
+        android:textColor="@color/white"
+        android:textSize="22sp"
+        android:layout_marginBottom="16dp" />
+
+    <TextView
+        android:id="@+id/tvStatus"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Тугмаро пахш кунед то оғоз шавад"
+        android:textColor="@color/text_secondary"
+        android:textSize="16sp"
+        android:layout_marginBottom="48dp" />
 
     <Button
-        android:id="@+id/btnOptimize"
+        android:id="@+id/btnAction"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Мутобиқсозӣ ва бартараф кардани хатоҳо"
-        android:backgroundTint="@color/primary"
-        android:textColor="@color/white"
-        android:layout_marginTop="16dp"
-        android:layout_marginBottom="16dp"/>
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Натиҷа:"
+        android:layout_height="60dp"
+        android:backgroundTint="@color/primary_gold"
+        android:text="ОЗМОИШИ ҚИСМАТ"
+        android:textColor="@color/background_dark"
+        android:textSize="18sp"
         android:textStyle="bold"
-        android:textColor="@color/primary"
-        android:textSize="16sp"
-        android:layout_marginBottom="8dp"/>
+        android:layout_marginBottom="16dp" />
 
-    <TextView
-        android:id="@+id/outputCode"
+    <Button
+        android:id="@+id/btnReset"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:background="@drawable/edit_text_bg"
-        android:padding="12dp"
-        android:textColor="@color/text_color"
-        android:textSize="14sp"
-        android:scrollbars="vertical"/>
+        android:layout_height="60dp"
+        android:backgroundTint="@color/card_bg"
+        android:text="АЗ НАВ"
+        android:textColor="@color/white"
+        android:textSize="18sp" />
 
 </LinearLayout>
